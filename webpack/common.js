@@ -30,7 +30,7 @@ module.exports = {
             inject:      false,
             template:    HtmlWebpackTemplate,
             title:       "User login/registration",
-            appMountIds: ["app"],
+            appMountIds: ["root"],
             mobile:      true,
             lang: "en-US",
         })
