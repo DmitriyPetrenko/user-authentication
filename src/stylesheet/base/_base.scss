@@ -1,0 +1,40 @@
+// -------------------------- //
+// Base styles -------------- //
+// -------------------------- //
+
+html{
+  box-sizing: border-box;
+  text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit;
+ }
+
+html,
+body {
+	height: 100%;
+	font-size:100%;
+}
+
+body{
+	height: 100%;
+	font: 16px/26px "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: #222;
+	-webkit-font-smoothing: antialiased;
+	-webkit-backface-visibility: hidden;
+	background:#fff;
+	font-style: normal;
+  font-weight: normal;
+  position:relative;
+}
+
+a{
+	cursor:pointer;
+}
+
+img{
+	max-width:100%;
+	height:auto;
+}
