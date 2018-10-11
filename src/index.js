@@ -1,5 +1,9 @@
 // Core
 import React from "react";
 import { render } from "react-dom";
-import { Provider } from "react-redux";
+import { BrowserRouter as Router } from "react-router-dom";
 
+// Containers
+import App from "./containers/App";
+
+render(<Router><App /></Router>, document.getElementById("root"));
