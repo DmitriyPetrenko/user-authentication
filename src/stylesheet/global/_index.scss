@@ -1,0 +1,112 @@
+.section {
+    padding: 3em 0;
+}
+
+.section-content {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+/* Form */
+
+.form {
+    &__wrapper {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 15px;
+        box-shadow: 0px 1px 2px 0px $theme-grey;
+        border-radius: $primary-border-radius;
+    }
+
+    &__caption {
+        font-size: 1.5em;
+        font-weight: 600;
+        line-height: 1;
+        text-align: center;
+        padding: 30px 0;
+    }
+
+    &__body-item {
+        &:not(:first-child) {
+            margin-top: 15px;
+        }
+    }
+
+    &__label {
+        color: $theme-grey;
+    }
+
+    &__field {
+        border: 1px solid $theme-grey;
+        line-height: 45px;
+        padding: 0 10px;
+        border-radius: $primary-border-radius;
+        display: block;
+        width: 100%;
+
+        &,
+        &:focus {
+            outline: none;
+        }
+
+        &:focus {
+            outline: none;
+            border-color: $theme-blue; 
+        }
+    }
+
+    &__button {
+        line-height: 45px;
+        border-radius: $primary-border-radius;
+        background-color: $theme-blue;
+        color: $theme-white;
+        text-transform: uppercase;
+        font-weight: 600;   
+        outline: none;
+        border: 0;
+        width: 100%;
+        display: inline-block;
+        padding: 0 10px;
+
+        &:disabled {
+            background-color: $theme-grey;
+        }
+
+        &:disabled:hover {
+            background-color: $theme-grey;
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            outline: none;
+            border: 0;
+            background-color: $theme-hover-blue;
+        }
+    }
+
+    &__footer {
+        margin-top: 15px; 
+    }
+}

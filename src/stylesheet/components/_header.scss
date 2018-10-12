@@ -1,34 +1,26 @@
 .header {
-    background-color: #777;
+    background-color: $theme-grey;
     line-height: 60px;
-    text-align: center;
 
     &__menu {
-        color: #fff;
-        display: inline-block;
+        color: $theme-white;
+        display: inline-block;  
     }
 
     &__menu-item {
         display: inline-block;
-        & > a {
-            display: inline-block;
-            padding: 0 15px;
+    }
 
-            &,
-            &:hover,
-            &:focus,
-            &:active {
-                color: inherit;
-                text-decoration: none;
-            }
+    &__menu-link {
+        display: inline-block;
+        padding: 0 15px;
 
-            &:hover {
-                background-color: #2B9EEB;
-            }
+        &:hover {
+            background-color: $theme-blue;
+        }
 
-            &.is-active {
-                background-color: #2B9EEB;
-            }
+        &.is-active {
+            background-color: $theme-blue;
         }
     }
 }

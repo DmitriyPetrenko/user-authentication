@@ -5,10 +5,10 @@ import { Switch, Route } from "react-router-dom";
 // Components
 import Header from "../../components/Header";
 // Containers
-import Home from "../Home";
-import Login from "../Login";
-import Registration from "../Registration";
-import NotFound from "../NotFound";
+import Home from "../../routes/Home";
+import Login from "../../routes/Login";
+import Registration from "../../routes/Registration";
+import NotFound from "../../routes/NotFound";
 
 // Styles
 import "../../stylesheet/styles.scss";
