@@ -28,6 +28,11 @@
     float: right;
 }
 
+.error {
+    font-size: 14px;
+    color: $error;
+}
+
 /* Form */
 
 .form {
@@ -48,8 +53,9 @@
     }
 
     &__body-item {
+        position: relative;
         &:not(:first-child) {
-            margin-top: 15px;
+            margin-top: 25px;
         }
     }
 
@@ -72,8 +78,22 @@
 
         &:focus {
             outline: none;
-            border-color: $theme-blue; 
+            border-color: $theme-blue;
         }
+
+        &[aria-invalid=true] {
+            border-color: $success;
+        }
+
+        &[aria-invalid=false] {
+            border-color: $error;
+        }
+    }
+
+    &__error {
+        position: absolute;
+        left: 0;
+        bottom: -26px;
     }
 
     &__button {
@@ -82,7 +102,7 @@
         background-color: $theme-blue;
         color: $theme-white;
         text-transform: uppercase;
-        font-weight: 600;   
+        font-weight: 600;
         outline: none;
         border: 0;
         width: 100%;
@@ -107,6 +127,6 @@
     }
 
     &__footer {
-        margin-top: 15px; 
+        margin-top: 15px;
     }
 }
