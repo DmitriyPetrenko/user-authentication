@@ -33,6 +33,14 @@
     color: $error;
 }
 
+.link {
+    color: $theme-blue;
+
+    &:hover {
+        color: $theme-hover-blue;
+    }
+}
+
 /* Form */
 
 .form {
@@ -98,6 +106,7 @@
 
     &__button {
         line-height: 45px;
+        height: 45px;
         border-radius: $primary-border-radius;
         background-color: $theme-blue;
         color: $theme-white;

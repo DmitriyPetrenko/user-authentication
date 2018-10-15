@@ -1,15 +1,19 @@
 // Core
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 // Instruments
-import { validate } from "../../instruments/validation";
+import { validateRegistration } from "../../instruments/validation";
+// Components
+import Spinner from "../Spinner";
 
 class FormRegistration extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            disabled: true,
             isFocus: false,
+            isFetching: false,
+            formIsValid: false,
             account: {
                 username: {
                     content: "",
@@ -49,40 +53,40 @@ class FormRegistration extends Component {
     }
 
     onBlurHandler (event) {
+        if (event.target.className !== "form__field") return;
+
         this.timeOutId = setTimeout(() => {
             this.setState({
                 isFocus: false
             });
         });
 
-        this.validation(event.target.id, event.target.value);
+        this.validationRegistrationField(event.target.id, event.target.value);
     }
 
     onFocusHandler () {
         clearTimeout(this.timeOutId);
     }
 
-    onSubmitHandler () {
+    validationRegistrationField (field, content) {
+        let updatedStateOfAccount = null;
 
-    }
-
-    validation (field, content) {
         switch (field) {
         case "username":
-            this.resultOfValidation = validate.username(content);
+            this.resultOfValidation = validateRegistration.username(content);
             break;
         case "email":
-            this.resultOfValidation = validate.email(content);
+            this.resultOfValidation = validateRegistration.email(content);
             break;
         case "password":
-            this.resultOfValidation = validate.password(content);
+            this.resultOfValidation = validateRegistration.password(content);
             break;
         case "confirmPassword":
-            this.resultOfValidation = validate.confirmPassword(this.state.account.password.content, content);
+            this.resultOfValidation = validateRegistration.confirmPassword(this.state.account.password.content, content);
             break;
         }
 
-        const updatedStateOfAccount = { ...this.state.account, ...{ [field]: {
+        updatedStateOfAccount = { ...this.state.account, ...{ [field]: {
             content,
             isValid: this.resultOfValidation.isValid,
             error: this.resultOfValidation.error
@@ -90,7 +94,42 @@ class FormRegistration extends Component {
 
         this.setState({
             account: updatedStateOfAccount
-        });
+        }, this.formValidHandler);
+    }
+
+    formValidHandler () {
+        const allFieldsAreValid = Object.values(this.state.account).every((field) => field.isValid);
+
+        if (allFieldsAreValid) {
+            this.setState({
+                formIsValid: true
+            });
+        } else {
+            this.setState({
+                formIsValid: false
+            });
+        }
+    }
+
+    onSubmitHandler () {
+        fetch("/registration", {
+            method: "POST",
+            headers: {
+                // "Authorization": TOKEN,
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                username: this.state.account.username.content,
+                email: this.state.account.email.content,
+                password: this.state.account.email.content
+            })
+        })
+            .then((response) => response)
+            .then((response) => response.json())
+            .then(({ data }) => {
+                console.log(data);
+            })
+            .catch((error) => error);
     }
 
     render () {
@@ -119,9 +158,7 @@ class FormRegistration extends Component {
                                     name="username"
                                     id="username"
                                     type="text"
-                                    aria-haspopup="true"
                                     aria-invalid={ username.isValid }
-                                    aria-expanded={ this.state.isFocus }
                                 />
                                 { !username.isValid && <span className="form__error error">{ username.error }</span> }
                             </div>
@@ -134,9 +171,7 @@ class FormRegistration extends Component {
                                     name="email"
                                     id="email"
                                     type="email"
-                                    aria-haspopup="true"
                                     aria-invalid={ email.isValid }
-                                    aria-expanded={ this.state.isFocus }
                                 />
                                 { !email.isValid && <span className="form__error error">{ email.error }</span> }
                             </div>
@@ -149,9 +184,7 @@ class FormRegistration extends Component {
                                     name="password"
                                     id="password"
                                     type="password"
-                                    aria-haspopup="true"
                                     aria-invalid={ password.isValid }
-                                    aria-expanded={ this.state.isFocus }
                                 />
                                 { !password.isValid && <span className="form__error error">{ password.error }</span> }
                             </div>
@@ -164,19 +197,18 @@ class FormRegistration extends Component {
                                     name="password"
                                     id="confirmPassword"
                                     type="password"
-                                    aria-haspopup="true"
                                     aria-invalid={ confirmPassword.isValid }
-                                    aria-expanded={ this.state.isFocus }
                                 />
                                 { !confirmPassword.isValid && <span className="form__error error">{ confirmPassword.error }</span> }
                             </div>
                             <div className="form__body-item">
-                                <button className="form__button" disabled={ this.state.disabled }>create account
+                                <button className="form__button" disabled={ !this.state.formIsValid }>
+                                    { this.state.isFetching ? <Spinner /> : "create account" }
                                 </button>
                             </div>
                         </div>
                         <div className="form__footer text-center">
-                            <p className="form__footer-text">Do you have an account?</p>
+                            <p className="form__footer-text">Do you have an account? <Link to="/login" className="link">Login</Link></p>
                         </div>
                     </form>
                 </div>
