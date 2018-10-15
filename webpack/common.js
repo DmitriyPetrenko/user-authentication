@@ -6,7 +6,7 @@ const webpack = require("webpack");
 
 module.exports = {
     entry: {
-        app: "./src/index.js"
+        app: "./client/index.js"
     },
     module: {
         rules: [
