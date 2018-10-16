@@ -129,3 +129,19 @@ export const validateLogin = {
         };
     }
 };
+
+export const validateCorrection = {
+    textarea (content) {
+        if (content.length === 0) {
+            return {
+                isValid: false,
+                error: "Field is required."
+            };
+        }
+
+        return {
+            isValid: true,
+            error: ""
+        };
+    }
+};

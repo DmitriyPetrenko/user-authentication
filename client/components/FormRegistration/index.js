@@ -1,6 +1,7 @@
 // Core
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { func, bool } from "prop-types";
 
 // Instruments
 import { validateRegistration } from "../../instruments/validation";
@@ -8,13 +9,19 @@ import { validateRegistration } from "../../instruments/validation";
 import Spinner from "../Spinner";
 
 class FormRegistration extends Component {
+    static propTypes = {
+        isFetching: bool.isRequired,
+        formIsValid: bool.isRequired,
+        onClickHandler: func.isRequired,
+        onBlurHandler: func.isRequired,
+        onFocusHandler: func.isRequired,
+        formValidHandler: func.isRequired
+    };
+
     constructor (props) {
         super(props);
         this.state = {
-            isFocus: false,
-            isFetching: false,
-            formIsValid: false,
-            account: {
+            fields: {
                 username: {
                     content: "",
                     isValid: null,
@@ -37,103 +44,62 @@ class FormRegistration extends Component {
                 }
             }
         };
-        this.timeOutId = null;
-        this.resultOfValidation = null;
 
-        this.onClickHandler = this.onClickHandler.bind(this);
-        this.onBlurHandler = this.onBlurHandler.bind(this);
-        this.onFocusHandler = this.onFocusHandler.bind(this);
+        this.onBlur = this.onBlur.bind(this);
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
     }
 
-    onClickHandler () {
-        this.setState((currentState) => ({
-            isFocus: !currentState.isFocus
-        }));
-    }
-
-    onBlurHandler (event) {
-        if (event.target.className !== "form__field") return;
-
-        this.timeOutId = setTimeout(() => {
-            this.setState({
-                isFocus: false
-            });
-        });
-
-        this.validationRegistrationField(event.target.id, event.target.value);
-    }
-
-    onFocusHandler () {
-        clearTimeout(this.timeOutId);
-    }
-
     validationRegistrationField (field, content) {
-        let updatedStateOfAccount = null;
+        let updatedStateOfFields = null;
+        let resultOfValidation = null;
 
         switch (field) {
         case "username":
-            this.resultOfValidation = validateRegistration.username(content);
+            resultOfValidation = validateRegistration.username(content);
             break;
         case "email":
-            this.resultOfValidation = validateRegistration.email(content);
+            resultOfValidation = validateRegistration.email(content);
             break;
         case "password":
-            this.resultOfValidation = validateRegistration.password(content);
+            resultOfValidation = validateRegistration.password(content);
             break;
         case "confirmPassword":
-            this.resultOfValidation = validateRegistration.confirmPassword(this.state.account.password.content, content);
+            resultOfValidation = validateRegistration.confirmPassword(this.state.fields.password.content, content);
             break;
         }
 
-        updatedStateOfAccount = { ...this.state.account, ...{ [field]: {
+        updatedStateOfFields = { ...this.state.fields, ...{ [field]: {
             content,
-            isValid: this.resultOfValidation.isValid,
-            error: this.resultOfValidation.error
+            isValid: resultOfValidation.isValid,
+            error: resultOfValidation.error
         } } };
 
         this.setState({
-            account: updatedStateOfAccount
-        }, this.formValidHandler);
+            fields: updatedStateOfFields
+        }, this.props.formValidHandler(updatedStateOfFields));
     }
 
-    formValidHandler () {
-        const allFieldsAreValid = Object.values(this.state.account).every((field) => field.isValid);
-
-        if (allFieldsAreValid) {
-            this.setState({
-                formIsValid: true
-            });
-        } else {
-            this.setState({
-                formIsValid: false
-            });
-        }
+    onBlur (event) {
+        this.props.onBlurHandler(event.target, this.validationRegistrationField.bind(this));
     }
 
     onSubmitHandler () {
-        fetch("/registration", {
-            method: "POST",
-            headers: {
-                // "Authorization": TOKEN,
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({
-                username: this.state.account.username.content,
-                email: this.state.account.email.content,
-                password: this.state.account.email.content
-            })
-        })
-            .then((response) => response)
-            .then((response) => response.json())
-            .then(({ data }) => {
-                console.log(data);
-            })
-            .catch((error) => error);
+
     }
 
     render () {
-        const { username, email, password, confirmPassword } = this.state.account;
+        const {
+            username,
+            email,
+            password,
+            confirmPassword
+        } = this.state.fields;
+        const {
+            isFetching,
+            formIsValid,
+            onClickHandler,
+            onFocusHandler
+        } = this.props;
 
         return (
             <div className="form">
@@ -141,9 +107,9 @@ class FormRegistration extends Component {
                     <form
                         className="form__inner"
                         onSubmit={ this.onSubmitHandler }
-                        onClick={ this.onClickHandler }
-                        onFocus={ this.onFocusHandler }
-                        onBlur={ this.onBlurHandler }
+                        onClick={ onClickHandler }
+                        onFocus={ onFocusHandler }
+                        onBlur={ this.onBlur }
                     >
                         <div className="form__head">
                             <h2 className="form__caption">Registration</h2>
@@ -202,8 +168,8 @@ class FormRegistration extends Component {
                                 { !confirmPassword.isValid && <span className="form__error error">{ confirmPassword.error }</span> }
                             </div>
                             <div className="form__body-item">
-                                <button className="form__button" disabled={ !this.state.formIsValid }>
-                                    { this.state.isFetching ? <Spinner /> : "create account" }
+                                <button className="form__button" disabled={ !formIsValid }>
+                                    { isFetching ? <Spinner /> : "create account" }
                                 </button>
                             </div>
                         </div>

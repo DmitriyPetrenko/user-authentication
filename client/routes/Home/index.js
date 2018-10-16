@@ -1,19 +1,28 @@
 // Core
-import React, { Component } from "react";
+import React from "react";
+import { object } from "prop-types";
 
-class Home extends Component {
-    render () {
-        return (
-            <section className="section home">
-                <section className="section-content text-center">
-                    <h1 className="home__main-caption">
-                        Welcome
-                        <p className="home__main-subcaption">to the best app in the World!</p>
-                    </h1>
-                </section>
+// Components
+import Welcome from "../../components/Welcome";
+import FormCorrection from "../../components/FormCorrection";
+// Instruments
+import withForm from "../../instruments/withForm";
+
+function Home ({ match }) {
+    const Form = withForm(FormCorrection, match);
+    const signedIn = true;
+
+    return (
+        <section className="section">
+            <section className="section-content text-center">
+                { signedIn ? <Form /> : <Welcome /> }
             </section>
-        );
-    }
+        </section>
+    );
 }
+
+Home.propTypes = {
+    match: object.isRequired
+};
 
 export default Home;

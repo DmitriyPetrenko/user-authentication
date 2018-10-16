@@ -1,6 +1,7 @@
 // Core
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { func, bool } from "prop-types";
 
 // Instruments
 import { validateLogin } from "../../instruments/validation";
@@ -8,6 +9,15 @@ import { validateLogin } from "../../instruments/validation";
 import Spinner from "../Spinner";
 
 class FormLogin extends Component {
+    static propTypes = {
+        isFetching: bool.isRequired,
+        formIsValid: bool.isRequired,
+        onClickHandler: func.isRequired,
+        onBlurHandler: func.isRequired,
+        onFocusHandler: func.isRequired,
+        formValidHandler: func.isRequired
+    };
+
     constructor (props) {
         super(props);
 
@@ -15,7 +25,7 @@ class FormLogin extends Component {
             isFocus: false,
             isFetching: false,
             formIsValid: false,
-            account: {
+            fields: {
                 username: {
                     content: "",
                     isValid: null,
@@ -28,79 +38,54 @@ class FormLogin extends Component {
                 }
             }
         };
-        this.timeOutId = null;
-        this.resultOfValidation = null;
-        this.lengthOfObject = Object.keys(this.state.account).length;
 
-        this.onClickHandler = this.onClickHandler.bind(this);
-        this.onBlurHandler = this.onBlurHandler.bind(this);
-        this.onFocusHandler = this.onFocusHandler.bind(this);
-        // this.onSubmitHandler = this.onSubmitHandler.bind(this);
-    }
-
-    componentDidMount () {
-        console.log("componentDidMount");
-    }
-
-    onClickHandler () {
-        this.setState((currentState) => ({
-            isFocus: !currentState.isFocus
-        }));
-    }
-
-    onBlurHandler (event) {
-        if (event.target.className !== "form__field") return;
-
-        this.timeOutId = setTimeout(() => {
-            this.setState({
-                isFocus: false
-            });
-        });
-
-        this.validationLoginField(event.target.id, event.target.value);
-    }
-
-    onFocusHandler () {
-        clearTimeout(this.timeOutId);
+        this.onBlur = this.onBlur.bind(this);
+        this.onSubmitHandler = this.onSubmitHandler.bind(this);
     }
 
     validationLoginField (field, content) {
+        let updatedStateOfAccount = null;
+        let resultOfValidation = null;
+
         switch (field) {
         case "username":
-            this.resultOfValidation = validateLogin.username(content);
+            resultOfValidation = validateLogin.username(content);
             break;
         case "password":
-            this.resultOfValidation = validateLogin.password(content);
+            resultOfValidation = validateLogin.password(content);
             break;
         }
 
-        const updatedStateOfAccount = { ...this.state.account, ...{ [field]: {
+        updatedStateOfAccount = { ...this.state.fields, ...{ [field]: {
             content,
-            isValid: this.resultOfValidation.isValid,
-            error: this.resultOfValidation.error
+            isValid: resultOfValidation.isValid,
+            error: resultOfValidation.error
         } } };
 
         this.setState({
-            account: updatedStateOfAccount
-        }, this.formValidHandler);
+            fields: updatedStateOfAccount
+        }, this.props.formValidHandler(updatedStateOfAccount));
     }
 
-    formValidHandler () {
-        const allFieldsAreValid = Object.values(this.state.account).every((field) => field.isValid);
+    onBlur (event) {
+        this.props.onBlurHandler(event.target, this.validationLoginField.bind(this));
+    }
 
-        if (allFieldsAreValid) {
-            this.setState({
-                formIsValid: true
-            });
-        } else {
-            this.setState({
-                formIsValid: false
-            });
-        }
+    onSubmitHandler () {
+
     }
 
     render () {
-        const { username, password } = this.state.account;
+        const {
+            username,
+            password
+        } = this.state.fields;
+        const {
+            isFetching,
+            formIsValid,
+            onClickHandler,
+            onFocusHandler
+        } = this.props;
 
         return (
             <div className="form">
@@ -108,9 +93,9 @@ class FormLogin extends Component {
                     <form
                         className="form__inner"
                         // onSubmit={ this.onSubmitHandler }
-                        onClick={ this.onClickHandler }
-                        onFocus={ this.onFocusHandler }
-                        onBlur={ this.onBlurHandler }
+                        onClick={ onClickHandler }
+                        onFocus={ onFocusHandler }
+                        onBlur={ this.onBlur }
                     >
                         <div className="form__head">
                             <h2 className="form__caption">Login</h2>
@@ -143,8 +128,8 @@ class FormLogin extends Component {
                                 { !password.isValid && <span className="form__error error">{ password.error }</span> }
                             </div>
                             <div className="form__body-item">
-                                <button className="form__button" disabled={ !this.state.formIsValid }>
-                                    { this.state.isFetching ? <Spinner /> : "Login" }
+                                <button className="form__button" disabled={ !formIsValid }>
+                                    { isFetching ? <Spinner /> : "Login" }
                                 </button>
                             </div>
                         </div>
