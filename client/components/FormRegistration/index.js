@@ -88,8 +88,6 @@ class FormRegistration extends Component {
     }
 
     onSubmitHandler (event) {
-        event.preventDefault();
-
         const {
             username,
             email,
@@ -103,6 +101,8 @@ class FormRegistration extends Component {
         };
 
         this.props.dispatch(newUser(user));
+
+        event.preventDefault();
     }
 
     render () {
@@ -186,7 +186,7 @@ class FormRegistration extends Component {
                                 { !confirmPassword.isValid && <span className="form__error error">{ confirmPassword.error }</span> }
                             </div>
                             <div className="form__body-item">
-                                <button className="form__button" disabled={ !formIsValid }>
+                                <button className="form__button" disabled={ !formIsValid || isFetching }>
                                     { isFetching ? <Spinner /> : "create account" }
                                 </button>
                             </div>

@@ -1,3 +1,6 @@
+// Instruments - API
+import api from "../instruments/api";
+
 // Constants
 export const RegistrationConstants = {
     NEW_USER: "NEW_USER",
@@ -6,22 +9,27 @@ export const RegistrationConstants = {
 };
 
 // Actions
-export const RegistrationActions = {
-    newUser (user) {
-        return {
-            type: RegistrationConstants.NEW_USER,
-            user
-        };
-    },
-    checkUser (user) {
-        return {
-            type: RegistrationConstants.CHECK_USER,
-            user
-        };
-    },
-    requestUsers () {
-        return {
-            type: RegistrationConstants.REQUEST_USERS
-        };
-    }
+export const newUser = (user) => (dispatch) => {
+    dispatch(requestUsers());
+
+    api.newUser(user)
+        .then(() => ({
+            type: RegistrationConstants.NEW_USER
+        }))
+        .catch((error) => console.log(error));
 };
+
+export const checkUser = () => (dispatch) => {
+    dispatch(requestUsers());
+
+    api.listUsers()
+        .then(({ data }) => ({
+            type: RegistrationConstants.CHECK_USER,
+            users: data
+        }))
+        .catch((error) => console.log(error));
+};
+
+export const requestUsers = () => ({
+    type: RegistrationConstants.REQUEST_USERS
+});

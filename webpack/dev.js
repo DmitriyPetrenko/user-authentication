@@ -29,6 +29,7 @@ module.exports = merge(common, {
     devtool: "cheap-module-eval-source-map",
     devServer: {
         contentBase: "./dist",
-        historyApiFallback: true
+        historyApiFallback: true,
+        port: 8090
     },
 });
