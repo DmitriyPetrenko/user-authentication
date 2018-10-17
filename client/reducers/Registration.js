@@ -1,19 +1,31 @@
 // Actions
-import { registerActions } from "../actions/Registration";
+import { RegistrationConstants } from "../actions/Registration";
 
 const {
-    REGISTER_ACCOUNT,
-    CHECK_ACCOUNT,
-    REQUEST_ACCOUNT
-} = registerActions;
-export const registration = (state = {}, action) => {
+    NEW_USER,
+    CHECK_USER,
+    REQUEST_USERS
+} = RegistrationConstants;
+const initialState = {
+    isFetching: false,
+    isAuthenticated: false
+};
+
+export const registration = (state = initialState, action) => {
     switch (action.type) {
-    case REGISTER_ACCOUNT:
+    case NEW_USER:
+        return {
+            ...state,
+            isFetching: false,
+            isAuthenticated: true
+        };
+    case CHECK_USER:
         return state;
-    case CHECK_ACCOUNT:
-        return state;
-    case REQUEST_ACCOUNT:
-        return state;
+    case REQUEST_USERS:
+        return {
+            ...state,
+            isFetching: true
+        };
     default:
         return state;
     }

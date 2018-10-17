@@ -1,19 +1,24 @@
 // Actions
-import { loginActions } from "../actions/Login";
+import { LoginConstants } from "../actions/Login";
 
 const {
-    LOGIN_ACCOUNT,
-    CHECK_ACCOUNT,
-    REQUEST_ACCOUNT
-} = loginActions;
-export const login = (state = {}, action) => {
+    CHECK_USER,
+    REQUEST_USERS
+} = LoginConstants;
+const initialState = {
+    isFetching: false,
+    isAuthenticated: false
+};
+
+export const login = (state = initialState, action) => {
     switch (action.type) {
-    case LOGIN_ACCOUNT:
+    case CHECK_USER:
         return state;
-    case CHECK_ACCOUNT:
-        return state;
-    case REQUEST_ACCOUNT:
-        return state;
+    case REQUEST_USERS:
+        return {
+            ...state,
+            isFetching: true
+        };
     default:
         return state;
     }

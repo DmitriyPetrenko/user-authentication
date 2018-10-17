@@ -1,12 +1,10 @@
 // Action creators
-import * as RegistrationActionCreators from "./Registration";
-import * as LoginActionCreators from "./Login";
+import { RegistrationActions } from "./Registration";
+import { LoginActions } from "./Login";
 
 export const {
-    registerAccount,
-    checkAccount,
-} = RegistrationActionCreators;
+    newUser
+} = RegistrationActions;
 export const {
-    loginAccount,
-    checkAccount,
-} = LoginActionCreators;
+    checkUser
+} = LoginActions;

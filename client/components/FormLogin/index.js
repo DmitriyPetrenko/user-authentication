@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { func, bool } from "prop-types";
+import { connect } from "react-redux";
 
 // Instruments
 import { validateLogin } from "../../instruments/validation";
@@ -143,4 +144,8 @@ class FormLogin extends Component {
     }
 }
 
-export default FormLogin;
+const mapStateToProps = (state) => ({
+    isFetching: state.login.isFetching
+});
+
+export default connect(mapStateToProps)(FormLogin);

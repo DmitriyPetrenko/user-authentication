@@ -1,20 +1,20 @@
-export const loginActions = {
-    LOGIN_ACCOUNT: "LOGIN_ACCOUNT",
-    CHECK_ACCOUNT: "CHECK_ACCOUNT",
-    REQUEST_ACCOUNT: "REQUEST_ACCOUNT"
+// Constants
+export const LoginConstants = {
+    CHECK_USER: "CHECK_USER",
+    REQUEST_USERS: "REQUEST_ACCOUNT"
 };
 
-export const loginAccount = (data) => ({
-    type: loginActions.LOGIN_ACCOUNT,
-    data
-});
-
-export const checkAccount = (data) => ({
-    type: loginActions.CHECK_ACCOUNT,
-    data
-});
-
-// const requestAccount = (data) => ({
-//     type: loginActions.REQUEST_ACCOUNT,
-//     data
-// });
+// Actions
+export const LoginActions = {
+    checkUser (user) {
+        return {
+            type: LoginConstants.CHECK_USER,
+            user
+        };
+    },
+    requestUsers () {
+        return {
+            type: LoginConstants.REQUEST_USERS
+        };
+    }
+};

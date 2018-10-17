@@ -1,20 +1,27 @@
-export const registerActions = {
-    REGISTER_ACCOUNT: "REGISTER_ACCOUNT",
-    CHECK_ACCOUNT: "CHECK_ACCOUNT",
-    REQUEST_ACCOUNT: "REQUEST_ACCOUNT"
+// Constants
+export const RegistrationConstants = {
+    NEW_USER: "NEW_USER",
+    CHECK_USER: "CHECK_USER",
+    REQUEST_USERS: "REQUEST_USERS"
 };
 
-export const registerAccount = (data) => ({
-    type: registerActions.REGISTER_ACCOUNT,
-    data
-});
-
-export const checkAccount = (data) => ({
-    type: registerActions.CHECK_ACCOUNT,
-    data
-});
-
-// const requestAccount = (data) => ({
-//     type: registerActions.REQUEST_ACCOUNT,
-//     data
-// });
+// Actions
+export const RegistrationActions = {
+    newUser (user) {
+        return {
+            type: RegistrationConstants.NEW_USER,
+            user
+        };
+    },
+    checkUser (user) {
+        return {
+            type: RegistrationConstants.CHECK_USER,
+            user
+        };
+    },
+    requestUsers () {
+        return {
+            type: RegistrationConstants.REQUEST_USERS
+        };
+    }
+};

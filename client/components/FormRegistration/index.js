@@ -2,11 +2,14 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { func, bool } from "prop-types";
+import { connect } from "react-redux";
 
 // Instruments
 import { validateRegistration } from "../../instruments/validation";
 // Components
 import Spinner from "../Spinner";
+// Actions
+import { newUser } from "../../actions";
 
 class FormRegistration extends Component {
     static propTypes = {
@@ -15,7 +18,8 @@ class FormRegistration extends Component {
         onClickHandler: func.isRequired,
         onBlurHandler: func.isRequired,
         onFocusHandler: func.isRequired,
-        formValidHandler: func.isRequired
+        formValidHandler: func.isRequired,
+        dispatch: func.isRequired
     };
 
     constructor (props) {
@@ -83,8 +87,22 @@ class FormRegistration extends Component {
         this.props.onBlurHandler(event.target, this.validationRegistrationField.bind(this));
     }
 
-    onSubmitHandler () {
+    onSubmitHandler (event) {
+        event.preventDefault();
 
+        const {
+            username,
+            email,
+            password
+        } = this.state.fields;
+        const user = {
+            username: username.content,
+            email: email.content,
+            password: password.content,
+            registered: new Date()
+        };
+
+        this.props.dispatch(newUser(user));
     }
 
     render () {
@@ -183,4 +201,8 @@ class FormRegistration extends Component {
     }
 }
 
-export default FormRegistration;
+const mapStateToProps = (state) => ({
+    isFetching: state.registration.isFetching
+});
+
+export default connect(mapStateToProps)(FormRegistration);

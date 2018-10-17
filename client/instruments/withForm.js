@@ -7,7 +7,6 @@ const withForm = (WrappedComponent, match) => (
             super(props);
             this.state = {
                 isFocus: false,
-                isFetching: false,
                 formIsValid: false
             };
             this.timeOutId = null;
@@ -58,14 +57,12 @@ const withForm = (WrappedComponent, match) => (
 
         render () {
             const {
-                isFetching,
                 formIsValid
             } = this.state;
 
             return (
                 <WrappedComponent
                     {...match}
-                    isFetching={ isFetching }
                     formIsValid={ formIsValid }
                     onClickHandler={ this.onClickHandler }
                     onBlurHandler={ this.onBlurHandler }
