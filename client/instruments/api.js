@@ -9,7 +9,11 @@ const api = {
         return axios.post(`${CONFIG.API_PREFIX}${CONFIG.PATH}`, user);
     },
     findField (field) {
-        return axios.get(`${CONFIG.API_PREFIX}${CONFIG.PATH}/${field.username}`);
+        try {
+            return axios.get(`${CONFIG.API_PREFIX}${CONFIG.PATH}/${field.username}`);
+        } catch (error) {
+            console.error(error);
+        }
     }
 };
 

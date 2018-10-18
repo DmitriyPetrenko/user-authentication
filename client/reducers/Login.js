@@ -2,18 +2,40 @@
 import { LoginConstants } from "../actions/Login";
 
 const {
-    CHECK_USER,
+    LOGIN_USER,
+    FIND_FIELD,
     REQUEST_USERS
 } = LoginConstants;
 const initialState = {
     isFetching: false,
-    isAuthenticated: false
+    isAuthenticated: false,
+    response: {
+        isValid: null,
+        messageError: ""
+    }
 };
 
 export const login = (state = initialState, action) => {
     switch (action.type) {
-    case CHECK_USER:
-        return state;
+    case LOGIN_USER:
+        return {
+            ...state,
+            isFetching: false,
+            isAuthenticated: true,
+            response: {
+                isValid: true,
+                messageError: ""
+            }
+        };
+    case FIND_FIELD:
+        return {
+            ...state,
+            isFetching: false,
+            response: {
+                isValid: false,
+                messageError: "Email or username exist"
+            }
+        };
     case REQUEST_USERS:
         return {
             ...state,

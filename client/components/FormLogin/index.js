@@ -30,12 +30,12 @@ class FormLogin extends Component {
                 username: {
                     content: "",
                     isValid: null,
-                    error: ""
+                    messageError: ""
                 },
                 password: {
                     content: "",
                     isValid: null,
-                    error: ""
+                    messageError: ""
                 }
             }
         };
@@ -60,7 +60,7 @@ class FormLogin extends Component {
         updatedStateOfAccount = { ...this.state.fields, ...{ [field]: {
             content,
             isValid: resultOfValidation.isValid,
-            error: resultOfValidation.error
+            messageError: resultOfValidation.messageError
         } } };
 
         this.setState({
@@ -113,7 +113,7 @@ class FormLogin extends Component {
                                     type="text"
                                     aria-invalid={ username.isValid }
                                 />
-                                { !username.isValid && <span className="form__error error">{ username.error }</span> }
+                                { !username.isValid && <span className="form__error error">{ username.messageError }</span> }
                             </div>
                             <div className="form__body-item">
                                 <label className="form__label" htmfor="password">
@@ -126,7 +126,7 @@ class FormLogin extends Component {
                                     type="password"
                                     aria-invalid={ password.isValid }
                                 />
-                                { !password.isValid && <span className="form__error error">{ password.error }</span> }
+                                { !password.isValid && <span className="form__error error">{ password.messageError }</span> }
                             </div>
                             <div className="form__body-item">
                                 <button className="form__button" disabled={ !formIsValid }>

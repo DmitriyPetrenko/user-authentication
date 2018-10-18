@@ -1,11 +1,10 @@
 // Action creators
 import * as RegistrationActions from "./Registration";
-import { LoginActions } from "./Login";
+import * as LoginActions from "./Login";
 
 export const {
-    newUser,
-    findField
+    newUser
 } = RegistrationActions;
 export const {
-    checkUser
+    loginUser
 } = LoginActions;

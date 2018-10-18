@@ -1,6 +1,8 @@
 module.exports = {
     serverPort: "8080",
-    route: "/users",
+    registration: {
+        route: "/registration"
+    },
     db: {
         name: "users",
         user: "dmitriy_petrenko",

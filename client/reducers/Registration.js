@@ -9,7 +9,10 @@ const {
 const initialState = {
     isFetching: false,
     isAuthenticated: false,
-    response: ""
+    response: {
+        isValid: null,
+        messageError: ""
+    }
 };
 
 export const registration = (state = initialState, action) => {
@@ -18,13 +21,20 @@ export const registration = (state = initialState, action) => {
         return {
             ...state,
             isFetching: false,
-            isAuthenticated: true
+            isAuthenticated: true,
+            response: {
+                isValid: true,
+                messageError: ""
+            }
         };
     case FIND_FIELD:
         return {
             ...state,
-            response: action.response,
-            isFetching: false
+            isFetching: false,
+            response: {
+                isValid: false,
+                messageError: "Email or username exist"
+            }
         };
     case REQUEST_USERS:
         return {

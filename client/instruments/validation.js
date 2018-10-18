@@ -8,22 +8,22 @@ export const validateRegistration = {
         if (content.length >= MIN_LENGTH.username && content.length <= MAX_LENGTH.username) {
             return {
                 isValid: true,
-                error: ""
+                messageError: ""
             };
         } else if (content.length < MIN_LENGTH.username && content.length !== 0) {
             return {
                 isValid: false,
-                error: `User name must be at least ${MIN_LENGTH.username} characters long.`
+                messageError: `User name must be at least ${MIN_LENGTH.username} characters long.`
             };
         } else if (content.length > MAX_LENGTH.username) {
             return {
                 isValid: false,
-                error: `User name must be no longer than ${MAX_LENGTH.username} characters.`
+                messageError: `User name must be no longer than ${MAX_LENGTH.username} characters.`
             };
         } else if (content.length === 0) {
             return {
                 isValid: false,
-                error: "Field is required."
+                messageError: "Field is required."
             };
         }
     },
@@ -33,13 +33,13 @@ export const validateRegistration = {
         if (checkContent) {
             return {
                 isValid: true,
-                error: ""
+                messageError: ""
             };
         }
 
         return {
             isValid: false,
-            error: "Please enter a valid email address."
+            messageError: "Please enter a valid email address."
         };
     },
     password (content) {
@@ -52,51 +52,51 @@ export const validateRegistration = {
         if (content.length >= MIN_LENGTH.password && content.length <= MAX_LENGTH.password && find.letter && find.digit) {
             return {
                 isValid: true,
-                error: ""
+                messageError: ""
             };
         } else if (content.length < MIN_LENGTH.password && content.length !== 0) {
             return {
                 isValid: false,
-                error: `Password must be at least ${MIN_LENGTH.password} characters long.`
+                messageError: `Password must be at least ${MIN_LENGTH.password} characters long.`
             };
         } else if (content.length > MAX_LENGTH.password) {
             return {
                 isValid: false,
-                error: `Password must be no longer than ${MAX_LENGTH.password} characters.`
+                messageError: `Password must be no longer than ${MAX_LENGTH.password} characters.`
             };
         } else if (content.length === 0) {
             return {
                 isValid: false,
-                error: "Field is required."
+                messageError: "Field is required."
             };
         } else if (find.letter && !find.digit) {
             return {
                 isValid: false,
-                error: "Password must contain at least one numeric character."
+                messageError: "Password must contain at least one numeric character."
             };
         } else if (find.digit && !find.letter) {
             return {
                 isValid: false,
-                error: "Password must contain at least one alphabetic character."
+                messageError: "Password must contain at least one alphabetic character."
             };
         }
     },
-    confirmPassword (prevContent, content) {
+    passwordConfirm (prevContent, content) {
         if (prevContent !== content) {
             return {
                 isValid: false,
-                error: "Password does not match."
+                messageError: "Password does not match."
             };
         } else if (content.length === 0) {
             return {
                 isValid: false,
-                error: "Field is required."
+                messageError: "Field is required."
             };
         }
 
         return {
             isValid: true,
-            error: ""
+            messageError: ""
         };
     }
 };
@@ -106,26 +106,26 @@ export const validateLogin = {
         if (content.length === 0) {
             return {
                 isValid: false,
-                error: "Field is required."
+                messageError: "Field is required."
             };
         }
 
         return {
             isValid: true,
-            error: ""
+            messageError: ""
         };
     },
     password (content) {
         if (content.length === 0) {
             return {
                 isValid: false,
-                error: "Field is required."
+                messageError: "Field is required."
             };
         }
 
         return {
             isValid: true,
-            error: ""
+            messageError: ""
         };
     }
 };
@@ -135,13 +135,13 @@ export const validateCorrection = {
         if (content.length === 0) {
             return {
                 isValid: false,
-                error: "Field is required."
+                messageError: "Field is required."
             };
         }
 
         return {
             isValid: true,
-            error: ""
+            messageError: ""
         };
     }
 };

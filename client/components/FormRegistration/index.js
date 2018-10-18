@@ -1,7 +1,7 @@
 // Core
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { func, bool, string } from "prop-types";
+import { func, bool } from "prop-types";
 import { connect } from "react-redux";
 
 // Instruments
@@ -9,7 +9,7 @@ import { validateRegistration } from "../../instruments/validation";
 // Components
 import Spinner from "../Spinner";
 // Actions
-import { newUser, findField } from "../../actions";
+import { newUser } from "../../actions";
 
 class FormRegistration extends Component {
     static propTypes = {
@@ -19,8 +19,7 @@ class FormRegistration extends Component {
         onBlurHandler: func.isRequired,
         onFocusHandler: func.isRequired,
         formValidHandler: func.isRequired,
-        dispatch: func.isRequired,
-        response: string.isRequired
+        dispatch: func.isRequired
     };
 
     constructor (props) {
@@ -30,22 +29,22 @@ class FormRegistration extends Component {
                 username: {
                     content: "",
                     isValid: null,
-                    error: ""
+                    messageError: ""
                 },
                 email: {
                     content: "",
                     isValid: null,
-                    error: ""
+                    messageError: ""
                 },
                 password: {
                     content: "",
                     isValid: null,
-                    error: ""
+                    messageError: ""
                 },
-                confirmPassword: {
+                passwordConfirm: {
                     content: "",
                     isValid: null,
-                    error: ""
+                    messageError: ""
                 }
             }
         };
@@ -55,31 +54,28 @@ class FormRegistration extends Component {
     }
 
     validationRegistrationField (field, content) {
-        const { dispatch } = this.props;
         let updatedStateOfFields = null;
         let resultOfValidation = null;
 
         switch (field) {
         case "username":
             resultOfValidation = validateRegistration.username(content);
-            resultOfValidation.isValid && dispatch(findField({ username: content }));
             break;
         case "email":
             resultOfValidation = validateRegistration.email(content);
-            resultOfValidation.isValid && dispatch(findField({ email: content }));
             break;
         case "password":
             resultOfValidation = validateRegistration.password(content);
             break;
-        case "confirmPassword":
-            resultOfValidation = validateRegistration.confirmPassword(this.state.fields.password.content, content);
+        case "passwordConfirm":
+            resultOfValidation = validateRegistration.passwordConfirm(this.state.fields.password.content, content);
             break;
         }
 
         updatedStateOfFields = { ...this.state.fields, ...{ [field]: {
             content,
             isValid: resultOfValidation.isValid,
-            error: resultOfValidation.error
+            messageError: resultOfValidation.messageError
         } } };
 
         this.setState({
@@ -102,7 +98,7 @@ class FormRegistration extends Component {
             username: username.content,
             email: email.content,
             password: password.content,
-            registered: +new Date()
+            createdDate: +new Date()
         };
 
         dispatch(newUser(user));
@@ -115,14 +111,13 @@ class FormRegistration extends Component {
             username,
             email,
             password,
-            confirmPassword
+            passwordConfirm
         } = this.state.fields;
         const {
             isFetching,
             formIsValid,
             onClickHandler,
-            onFocusHandler,
-            response
+            onFocusHandler
         } = this.props;
 
         return (
@@ -150,7 +145,7 @@ class FormRegistration extends Component {
                                     type="text"
                                     aria-invalid={ username.isValid }
                                 />
-                                { !username.isValid && <span className="form__error error">{ username.error }</span> }
+                                { !username.isValid && <span className="form__error error">{ username.messageError }</span> }
                             </div>
                             <div className="form__body-item">
                                 <label className="form__label" htmlFor="email">
@@ -163,7 +158,7 @@ class FormRegistration extends Component {
                                     type="email"
                                     aria-invalid={ email.isValid }
                                 />
-                                { !email.isValid && <span className="form__error error">{ email.error }</span> }
+                                { !email.isValid && <span className="form__error error">{ email.messageError }</span> }
                             </div>
                             <div className="form__body-item">
                                 <label className="form__label" htmlFor="password">
@@ -176,20 +171,20 @@ class FormRegistration extends Component {
                                     type="password"
                                     aria-invalid={ password.isValid }
                                 />
-                                { !password.isValid && <span className="form__error error">{ password.error }</span> }
+                                { !password.isValid && <span className="form__error error">{ password.messageError }</span> }
                             </div>
                             <div className="form__body-item">
-                                <label className="form__label" htmlFor="confirmPassword">
+                                <label className="form__label" htmlFor="passwordConfirm">
                                     Confirm password
                                 </label>
                                 <input
                                     className="form__field"
                                     name="password"
-                                    id="confirmPassword"
+                                    id="passwordConfirm"
                                     type="password"
-                                    aria-invalid={ confirmPassword.isValid }
+                                    aria-invalid={ passwordConfirm.isValid }
                                 />
-                                { !confirmPassword.isValid && <span className="form__error error">{ confirmPassword.error }</span> }
+                                { !passwordConfirm.isValid && <span className="form__error error">{ passwordConfirm.messageError }</span> }
                             </div>
                             <div className="form__body-item">
                                 <button className="form__button" disabled={ !formIsValid || isFetching }>

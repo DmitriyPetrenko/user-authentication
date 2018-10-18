@@ -13,25 +13,21 @@ export const newUser = (user) => (dispatch) => {
     dispatch(requestUsers());
 
     api.newUser(user)
-        .then(() => {
-            dispatch({
-                type: RegistrationConstants.NEW_USER
-            });
+        .then((response) => {
+            console.log(response);
+            if (response.status === 201) {
+                dispatch({
+                    type: RegistrationConstants.NEW_USER
+                });
+            } else {
+                dispatch({
+                    type: RegistrationConstants.FIND_FIELD
+                });
+            }
         })
-        .catch((error) => console.log(error));
-};
-
-export const findField = (field) => (dispatch) => {
-    dispatch(requestUsers());
-
-    api.findField(field)
-        .then(({ data }) => {
-            dispatch({
-                type: RegistrationConstants.FIND_FIELD,
-                response: data
-            });
-        })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+            throw new Error(error);
+        });
 };
 
 export const requestUsers = () => ({
