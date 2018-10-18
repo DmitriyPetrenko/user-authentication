@@ -3,7 +3,8 @@ import * as RegistrationActions from "./Registration";
 import { LoginActions } from "./Login";
 
 export const {
-    newUser
+    newUser,
+    findField
 } = RegistrationActions;
 export const {
     checkUser

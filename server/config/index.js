@@ -1,8 +1,9 @@
 module.exports = {
     serverPort: "8080",
+    route: "/users",
     db: {
         name: "users",
-        host: "127.0.0.1",
-        port: 27017
+        user: "dmitriy_petrenko",
+        password: "1230321d"
     }
 };

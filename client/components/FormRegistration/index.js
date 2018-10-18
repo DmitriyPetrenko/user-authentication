@@ -1,7 +1,7 @@
 // Core
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { func, bool } from "prop-types";
+import { func, bool, string } from "prop-types";
 import { connect } from "react-redux";
 
 // Instruments
@@ -9,7 +9,7 @@ import { validateRegistration } from "../../instruments/validation";
 // Components
 import Spinner from "../Spinner";
 // Actions
-import { newUser } from "../../actions";
+import { newUser, findField } from "../../actions";
 
 class FormRegistration extends Component {
     static propTypes = {
@@ -19,7 +19,8 @@ class FormRegistration extends Component {
         onBlurHandler: func.isRequired,
         onFocusHandler: func.isRequired,
         formValidHandler: func.isRequired,
-        dispatch: func.isRequired
+        dispatch: func.isRequired,
+        response: string.isRequired
     };
 
     constructor (props) {
@@ -54,15 +55,18 @@ class FormRegistration extends Component {
     }
 
     validationRegistrationField (field, content) {
+        const { dispatch } = this.props;
         let updatedStateOfFields = null;
         let resultOfValidation = null;
 
         switch (field) {
         case "username":
             resultOfValidation = validateRegistration.username(content);
+            resultOfValidation.isValid && dispatch(findField({ username: content }));
             break;
         case "email":
             resultOfValidation = validateRegistration.email(content);
+            resultOfValidation.isValid && dispatch(findField({ email: content }));
             break;
         case "password":
             resultOfValidation = validateRegistration.password(content);
@@ -88,6 +92,7 @@ class FormRegistration extends Component {
     }
 
     onSubmitHandler (event) {
+        const { dispatch } = this.props;
         const {
             username,
             email,
@@ -97,10 +102,10 @@ class FormRegistration extends Component {
             username: username.content,
             email: email.content,
             password: password.content,
-            registered: new Date()
+            registered: +new Date()
         };
 
-        this.props.dispatch(newUser(user));
+        dispatch(newUser(user));
 
         event.preventDefault();
     }
@@ -116,7 +121,8 @@ class FormRegistration extends Component {
             isFetching,
             formIsValid,
             onClickHandler,
-            onFocusHandler
+            onFocusHandler,
+            response
         } = this.props;
 
         return (
@@ -201,8 +207,9 @@ class FormRegistration extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    isFetching: state.registration.isFetching
+const mapStateToProps = ({ registration }) => ({
+    isFetching: registration.isFetching,
+    response: registration.response
 });
 
 export default connect(mapStateToProps)(FormRegistration);

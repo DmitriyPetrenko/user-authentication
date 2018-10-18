@@ -1,9 +1,19 @@
-module.exports = function (app, db, callback) {
-    app.get("/registration", (req, res) => {
+const config = require("../config");
 
+module.exports = function (app, db, callback) {
+    app.get(`${config.route}/:field`, (req, res) => {
+        const field = req.params.field;
+        const fieldKey = /^[a-zA-Z0-9_.-]+@\w+\.[a-zA-Z]{2,}$/.exec(field) ? "email" : "username";
+        const details = {[fieldKey]: field };
+
+        db.collection("list").findOne(details, (err, result) => {
+            err ? res.send({ "error": err }) : res.send(result[fieldKey]);
+        });
+
+        callback();
     });
 
-    app.post("/registration", (req, res) => {
+    app.post(`${config.route}`, (req, res) => {
         const user = {
             username: req.body.username,
             email: req.body.email,

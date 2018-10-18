@@ -3,12 +3,13 @@ import { RegistrationConstants } from "../actions/Registration";
 
 const {
     NEW_USER,
-    CHECK_USER,
+    FIND_FIELD,
     REQUEST_USERS
 } = RegistrationConstants;
 const initialState = {
     isFetching: false,
-    isAuthenticated: false
+    isAuthenticated: false,
+    response: ""
 };
 
 export const registration = (state = initialState, action) => {
@@ -19,8 +20,12 @@ export const registration = (state = initialState, action) => {
             isFetching: false,
             isAuthenticated: true
         };
-    case CHECK_USER:
-        return state;
+    case FIND_FIELD:
+        return {
+            ...state,
+            response: action.response,
+            isFetching: false
+        };
     case REQUEST_USERS:
         return {
             ...state,

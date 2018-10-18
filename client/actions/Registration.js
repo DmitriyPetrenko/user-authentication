@@ -4,7 +4,7 @@ import api from "../instruments/api";
 // Constants
 export const RegistrationConstants = {
     NEW_USER: "NEW_USER",
-    CHECK_USER: "CHECK_USER",
+    FIND_FIELD: "FIND_FIELD",
     REQUEST_USERS: "REQUEST_USERS"
 };
 
@@ -13,20 +13,24 @@ export const newUser = (user) => (dispatch) => {
     dispatch(requestUsers());
 
     api.newUser(user)
-        .then(() => ({
-            type: RegistrationConstants.NEW_USER
-        }))
+        .then(() => {
+            dispatch({
+                type: RegistrationConstants.NEW_USER
+            });
+        })
         .catch((error) => console.log(error));
 };
 
-export const checkUser = () => (dispatch) => {
+export const findField = (field) => (dispatch) => {
     dispatch(requestUsers());
 
-    api.listUsers()
-        .then(({ data }) => ({
-            type: RegistrationConstants.CHECK_USER,
-            users: data
-        }))
+    api.findField(field)
+        .then(({ data }) => {
+            dispatch({
+                type: RegistrationConstants.FIND_FIELD,
+                response: data
+            });
+        })
         .catch((error) => console.log(error));
 };
 

@@ -5,18 +5,11 @@ import axios from "axios";
 import CONFIG from "../config";
 
 const api = {
-    listUsers () {
-        return axios.get(`${CONFIG.API_PREFIX}/registration`);
-    },
     newUser (user) {
-        return axios({
-            method: "post",
-            url: `${CONFIG.API_PREFIX}/registration`,
-            body: JSON.stringify(user),
-            headers: {
-                "content-type": "application/json"
-            }
-        });
+        return axios.post(`${CONFIG.API_PREFIX}${CONFIG.PATH}`, user);
+    },
+    findField (field) {
+        return axios.get(`${CONFIG.API_PREFIX}${CONFIG.PATH}/${field.username}`);
     }
 };
 

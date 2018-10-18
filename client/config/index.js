@@ -7,7 +7,8 @@ const CONFIG = {
         username: 3,
         password: 6
     },
-    API_PREFIX: "http://localhost:8080"
+    API_PREFIX: "http://localhost:8080",
+    PATH: "/users"
 };
 
 export default CONFIG;

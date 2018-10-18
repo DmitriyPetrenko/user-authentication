@@ -50,7 +50,6 @@ class Menu extends Component {
                             <Link
                                 to="/login"
                                 className="header__menu-link"
-                                activeClassName="is-active"
                             >
                                 Logout
                             </Link>
@@ -63,7 +62,7 @@ class Menu extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    isAuthenticated: state.login.isAuthenticated || state.login.isAuthenticated
+    isAuthenticated: state.login.isAuthenticated || state.registration.isAuthenticated
 });
 
 export default connect(mapStateToProps)(Menu);
