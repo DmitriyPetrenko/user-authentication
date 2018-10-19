@@ -1,8 +1,7 @@
 // Core
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { func, bool, object } from "prop-types";
-import { connect } from "react-redux";
+import { func, bool, object, string } from "prop-types";
 
 // Instruments
 import { validateRegistration } from "../../instruments/validation";
@@ -15,13 +14,15 @@ class FormRegistration extends Component {
     static propTypes = {
         isFetching: bool.isRequired,
         formIsValid: bool.isRequired,
+        messageError: string.isRequired,
         onClickHandler: func.isRequired,
+        onSubmitHandler: func.isRequired,
         onBlurHandler: func.isRequired,
         onFocusHandler: func.isRequired,
         formValidHandler: func.isRequired,
+        setNewStateOfField: func.isRequired,
         dispatch: func.isRequired,
-        history: object.isRequired,
-        form: object.isRequired
+        history: object.isRequired
     };
 
     constructor (props) {
@@ -52,10 +53,14 @@ class FormRegistration extends Component {
         };
 
         this.onBlur = this.onBlur.bind(this);
-        this.onSubmitHandler = this.onSubmitHandler.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     validationRegistrationField (field, content) {
+        const {
+            formValidHandler,
+            setNewStateOfField
+        } = this.props;
         let updatedStateOfFields = null;
         let resultOfValidation = null;
 
@@ -74,25 +79,30 @@ class FormRegistration extends Component {
             break;
         }
 
-        updatedStateOfFields = { ...this.state.fields, ...{ [field]: {
+        // return updated state of field // func(prevState, newState, field)
+
+        updatedStateOfFields = setNewStateOfField(this.state.fields, {
             content,
             isValid: resultOfValidation.isValid,
             messageError: resultOfValidation.messageError
-        } } };
+        }, field);
 
         this.setState({
             fields: updatedStateOfFields
-        }, this.props.formValidHandler(updatedStateOfFields));
+        }, formValidHandler(updatedStateOfFields));
     }
 
     onBlur (event) {
         this.props.onBlurHandler(event.target, this.validationRegistrationField.bind(this));
     }
 
-    onSubmitHandler (event) {
+    onSubmit (event) {
         const {
             dispatch,
-            history
+            history,
+            onSubmitHandler,
+            setNewStateOfField,
+            messageError
         } = this.props;
         const {
             username,
@@ -110,7 +120,17 @@ class FormRegistration extends Component {
             history.push("/main");
         }));
 
-        event.preventDefault();
+        if (!onSubmitHandler(event)) {
+            const updatedStateOfFields = setNewStateOfField(this.state.fields, {
+                content: "",
+                isValid: false,
+                messageError
+            }, "email");
+
+            this.setState({
+                fields: updatedStateOfFields
+            });
+        }
     }
 
     render () {
@@ -124,17 +144,15 @@ class FormRegistration extends Component {
             isFetching,
             formIsValid,
             onClickHandler,
-            onFocusHandler,
-            form
+            onFocusHandler
         } = this.props;
-        console.log(form.isValid);
 
         return (
             <div className="form">
                 <div className="form__wrapper">
                     <form
                         className="form__inner"
-                        onSubmit={ this.onSubmitHandler }
+                        onSubmit={ this.onSubmit }
                         onClick={ onClickHandler }
                         onFocus={ onFocusHandler }
                         onBlur={ this.onBlur }
@@ -211,9 +229,4 @@ class FormRegistration extends Component {
     }
 }
 
-const mapStateToProps = ({ authentication }) => ({
-    isFetching: authentication.isFetching,
-    form: authentication.form
-});
-
-export default connect(mapStateToProps)(FormRegistration);
+export default FormRegistration;

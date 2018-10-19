@@ -4,10 +4,7 @@ import { userConstans } from "../actions/UserConstants";
 const initialState = {
     isAuthenticated: false,
     isFetching: false,
-    form: {
-        messageError: "",
-        isValid: true
-    },
+    messageError: "",
     user: {}
 };
 
@@ -31,11 +28,8 @@ export const authentication = (state = initialState, action) => {
     case userConstans.USER_REGISTRATION_FAILURE:
         return {
             ...state,
-            isFetching: true,
-            form: {
-                messageError: action.messageError,
-                isValid: false
-            }
+            isFetching: false,
+            messageError: action.messageError
         };
     default:
         return state;

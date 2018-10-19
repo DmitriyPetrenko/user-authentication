@@ -1,7 +1,12 @@
 // Core
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-const withForm = (WrappedComponent, props) => (
+// Actions
+import * as UserActions from "../actions";
+
+const withForm = (WrappedComponent, props) => {
     class WithForm extends Component {
         constructor (props) {
             super(props);
@@ -11,7 +16,9 @@ const withForm = (WrappedComponent, props) => (
             };
             this.timeOutId = null;
 
+            this.boundActionCreators = bindActionCreators(UserActions, props.dispatch);
             this.onClickHandler = this.onClickHandler.bind(this);
+            this.onSubmitHandler = this.onSubmitHandler.bind(this);
             this.onBlurHandler = this.onBlurHandler.bind(this);
             this.onFocusHandler = this.onFocusHandler.bind(this);
             this.formValidHandler = this.formValidHandler.bind(this);
@@ -55,6 +62,26 @@ const withForm = (WrappedComponent, props) => (
             }
         }
 
+        setNewStateOfField (prevState, newState, field) {
+            const updatedStateOfFields = { ...prevState, ...{ [field]: newState } };
+
+            return updatedStateOfFields;
+        }
+
+        onSubmitHandler (event) {
+            event.preventDefault();
+
+            if (this.state.formIsValid && !this.props.isAuthenticated) {
+                this.setState({
+                    formIsValid: false
+                });
+
+                return false;
+            }
+
+            return true;
+        }
+
         render () {
             const {
                 formIsValid
@@ -62,16 +89,28 @@ const withForm = (WrappedComponent, props) => (
 
             return (
                 <WrappedComponent
-                    {...props}
+                    { ...props }
+                    { ...this.props }
+                    { ...this.boundActionCreators }
                     formIsValid={ formIsValid }
                     onClickHandler={ this.onClickHandler }
+                    onSubmitHandler={ this.onSubmitHandler }
                     onBlurHandler={ this.onBlurHandler }
                     onFocusHandler={ this.onFocusHandler }
                     formValidHandler={ this.formValidHandler }
+                    setNewStateOfField={ this.setNewStateOfField }
                 />
             );
         }
     }
-);
+
+    const mapStateToProps = ({ authentication }) => ({
+        isFetching: authentication.isFetching,
+        isAuthenticated: authentication.isAuthenticated,
+        messageError: authentication.messageError
+    });
+
+    return connect(mapStateToProps)(WithForm);
+};
 
 export default withForm;
