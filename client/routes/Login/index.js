@@ -7,8 +7,8 @@ import FormLogin from "../../components/FormLogin";
 // Instruments
 import withForm from "../../instruments/withForm";
 
-function Login ({ match }) {
-    const Form = withForm(FormLogin, match);
+function Login (props) {
+    const Form = withForm(FormLogin, props);
 
     return (
         <section className="section">

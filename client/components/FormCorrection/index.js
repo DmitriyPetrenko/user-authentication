@@ -9,7 +9,6 @@ import Spinner from "../Spinner";
 
 class FormCorrection extends Component {
     static propTypes = {
-        isFetching: bool.isRequired,
         formIsValid: bool.isRequired,
         onClickHandler: func.isRequired,
         onBlurHandler: func.isRequired,
@@ -20,11 +19,12 @@ class FormCorrection extends Component {
     constructor (props) {
         super(props);
         this.state = {
+            isFetching: false,
             fields: {
                 textarea: {
                     content: "",
                     isValid: null,
-                    error: ""
+                    messageError: ""
                 }
             }
         };
@@ -42,7 +42,7 @@ class FormCorrection extends Component {
         updatedStateOfFields = { ...this.state.fields, ...{ [field]: {
             content,
             isValid: resultOfValidation.isValid,
-            error: resultOfValidation.error
+            messageError: resultOfValidation.messageError
         } } };
 
         this.setState({
@@ -60,10 +60,10 @@ class FormCorrection extends Component {
 
     render () {
         const {
-            textarea
-        } = this.state.fields;
-        const {
             isFetching,
+            fields
+        } = this.state;
+        const {
             formIsValid,
             onClickHandler,
             onFocusHandler
@@ -91,9 +91,9 @@ class FormCorrection extends Component {
                                     className="form__field form__field_textarea"
                                     name="textarea"
                                     id="textarea"
-                                    aria-invalid={ textarea.isValid }
+                                    aria-invalid={ fields.textarea.isValid }
                                 />
-                                { !textarea.isValid && <span className="form__error error">{ textarea.error }</span> }
+                                { !fields.textarea.isValid && <span className="form__error error">{ fields.textarea.messageError }</span> }
                             </div>
 
                             <div className="form__body-item">

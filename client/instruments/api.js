@@ -2,18 +2,25 @@
 import axios from "axios";
 
 // Config
-import CONFIG from "../config";
+import config from "../config";
 
+// Helpers
+import { responseHandler, errorHandler } from "./helpers";
+
+const {
+    prefix,
+    path
+} = config.API;
 const api = {
-    newUser (user) {
-        return axios.post(`${CONFIG.API_PREFIX}${CONFIG.PATH}`, user);
+    login (user) {
+        return axios.post(`${prefix}${path.login}`, user)
+            .then(responseHandler)
+            .catch(errorHandler);
     },
-    findField (field) {
-        try {
-            return axios.get(`${CONFIG.API_PREFIX}${CONFIG.PATH}/${field.username}`);
-        } catch (error) {
-            console.error(error);
-        }
+    registration (user) {
+        return axios.post(`${prefix}${path.registration}`, user)
+            .then(responseHandler)
+            .catch(errorHandler);
     }
 };
 

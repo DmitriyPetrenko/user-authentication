@@ -1,7 +1,7 @@
 // Core
 import React, { Component } from "react";
 
-const withForm = (WrappedComponent, match) => (
+const withForm = (WrappedComponent, props) => (
     class WithForm extends Component {
         constructor (props) {
             super(props);
@@ -62,7 +62,7 @@ const withForm = (WrappedComponent, match) => (
 
             return (
                 <WrappedComponent
-                    {...match}
+                    {...props}
                     formIsValid={ formIsValid }
                     onClickHandler={ this.onClickHandler }
                     onBlurHandler={ this.onBlurHandler }

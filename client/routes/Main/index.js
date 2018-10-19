@@ -7,8 +7,8 @@ import FormCorrection from "../../components/FormCorrection";
 // Instruments
 import withForm from "../../instruments/withForm";
 
-function App ({ match }) {
-    const Form = withForm(FormCorrection, match);
+function Main (props) {
+    const Form = withForm(FormCorrection, props);
 
     return (
         <section className="section">
@@ -19,8 +19,8 @@ function App ({ match }) {
     );
 }
 
-App.propTypes = {
+Main.propTypes = {
     match: object.isRequired
 };
 
-export default App;
+export default Main;

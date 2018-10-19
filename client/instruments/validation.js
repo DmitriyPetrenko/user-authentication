@@ -1,9 +1,9 @@
 // Config
-import CONFIG from "../config";
+import config from "../config";
 
 export const validateRegistration = {
     username (content) {
-        const { MAX_LENGTH, MIN_LENGTH } = CONFIG;
+        const { MAX_LENGTH, MIN_LENGTH } = config;
 
         if (content.length >= MIN_LENGTH.username && content.length <= MAX_LENGTH.username) {
             return {
@@ -43,7 +43,7 @@ export const validateRegistration = {
         };
     },
     password (content) {
-        const { MAX_LENGTH, MIN_LENGTH } = CONFIG;
+        const { MAX_LENGTH, MIN_LENGTH } = config;
         const find = {
             letter: /[a-zA-Z]/.exec(content),
             digit: /[0-9]/.exec(content)

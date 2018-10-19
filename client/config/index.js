@@ -1,4 +1,4 @@
-const CONFIG = {
+const config = {
     MAX_LENGTH: {
         username: 30,
         password: 60
@@ -7,8 +7,13 @@ const CONFIG = {
         username: 3,
         password: 6
     },
-    API_PREFIX: "http://localhost:8080",
-    PATH: "/registration"
+    API: {
+        prefix: "http://localhost:8080",
+        path: {
+            login: "/login",
+            registration: "/registration"
+        }
+    }
 };
 
-export default CONFIG;
+export default config;

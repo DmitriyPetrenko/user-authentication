@@ -14,13 +14,13 @@ router.post(`${config.registration.route}`, (req, res) => {
         .then((user) => {
             if (user.length > 1) {
                return res.status(409).json({
-                   message: "Mail exists"
+                   messageError: "Email exists"
                });
             } else {
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
                     if (err) {
                         return res.status(500).json({
-                            error: err
+                            messageError: err
                         });
                     } else {
                         const user = {
@@ -33,12 +33,12 @@ router.post(`${config.registration.route}`, (req, res) => {
                         User.collection.insertOne(user)
                             .then(result => {
                                 res.status(201).json({
-                                  message: "User created"
+                                  messageError: "User created"
                                 });
                             })
                             .catch(err => {
                                 res.status(500).json({
-                                    error: err
+                                    messageError: err
                                 });
                             });
                     }

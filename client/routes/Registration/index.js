@@ -7,8 +7,8 @@ import FormRegistration from "../../components/FormRegistration";
 // Instruments
 import withForm from "../../instruments/withForm";
 
-function Registration ({ match }) {
-    const Form = withForm(FormRegistration, match);
+function Registration (props) {
+    const Form = withForm(FormRegistration, props);
 
     return (
         <section className="section">

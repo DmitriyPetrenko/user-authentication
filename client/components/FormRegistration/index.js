@@ -1,7 +1,7 @@
 // Core
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { func, bool } from "prop-types";
+import { func, bool, object } from "prop-types";
 import { connect } from "react-redux";
 
 // Instruments
@@ -9,7 +9,7 @@ import { validateRegistration } from "../../instruments/validation";
 // Components
 import Spinner from "../Spinner";
 // Actions
-import { newUser } from "../../actions";
+import { registration } from "../../actions";
 
 class FormRegistration extends Component {
     static propTypes = {
@@ -19,7 +19,9 @@ class FormRegistration extends Component {
         onBlurHandler: func.isRequired,
         onFocusHandler: func.isRequired,
         formValidHandler: func.isRequired,
-        dispatch: func.isRequired
+        dispatch: func.isRequired,
+        history: object.isRequired,
+        form: object.isRequired
     };
 
     constructor (props) {
@@ -88,7 +90,10 @@ class FormRegistration extends Component {
     }
 
     onSubmitHandler (event) {
-        const { dispatch } = this.props;
+        const {
+            dispatch,
+            history
+        } = this.props;
         const {
             username,
             email,
@@ -101,7 +106,9 @@ class FormRegistration extends Component {
             createdDate: +new Date()
         };
 
-        dispatch(newUser(user));
+        dispatch(registration(user, () => {
+            history.push("/main");
+        }));
 
         event.preventDefault();
     }
@@ -117,8 +124,10 @@ class FormRegistration extends Component {
             isFetching,
             formIsValid,
             onClickHandler,
-            onFocusHandler
+            onFocusHandler,
+            form
         } = this.props;
+        console.log(form.isValid);
 
         return (
             <div className="form">
@@ -202,9 +211,9 @@ class FormRegistration extends Component {
     }
 }
 
-const mapStateToProps = ({ registration }) => ({
-    isFetching: registration.isFetching,
-    response: registration.response
+const mapStateToProps = ({ authentication }) => ({
+    isFetching: authentication.isFetching,
+    form: authentication.form
 });
 
 export default connect(mapStateToProps)(FormRegistration);

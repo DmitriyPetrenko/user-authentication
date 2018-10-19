@@ -1,8 +1,11 @@
 // Core
 import React, { Component } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bool } from "prop-types";
+
+// Components
+import ButtonLogout from "../ButtonLogout";
 
 class Menu extends Component {
     static propTypes = {
@@ -11,6 +14,7 @@ class Menu extends Component {
 
     render () {
         const { isAuthenticated } = this.props;
+        console.log(this.props);
 
         return (
             <nav className="header__menu-wrapper clearfix">
@@ -24,45 +28,39 @@ class Menu extends Component {
                         </Link>
                     </li>
                 </ul>
-                { !isAuthenticated
-                    ? <ul className="header__menu pull-right">
+                { isAuthenticated ? (
+                    <ul className="header__menu pull-right">
                         <li className="header__menu-item">
-                            <NavLink
-                                to="/login"
-                                className="header__menu-link"
-                                activeClassName="is-active"
-                            >
-                                Login
-                            </NavLink>
-                        </li>
-                        <li className="header__menu-item">
-                            <NavLink
-                                to="/registration"
-                                className="header__menu-link"
-                                activeClassName="is-active"
-                            >
-                                Registration
-                            </NavLink>
+                            <ButtonLogout />
                         </li>
                     </ul>
-                    : <ul className="header__menu pull-right">
+                ) : (
+                    <ul className="header__menu pull-right">
                         <li className="header__menu-item">
                             <Link
                                 to="/login"
                                 className="header__menu-link"
                             >
-                                Logout
+                                Login
+                            </Link>
+                        </li>
+                        <li className="header__menu-item">
+                            <Link
+                                to="/registration"
+                                className="header__menu-link"
+                            >
+                                Registration
                             </Link>
                         </li>
                     </ul>
-                }
+                )}
             </nav>
         );
     }
 }
 
-const mapStateToProps = (state) => ({
-    isAuthenticated: state.login.isAuthenticated || state.registration.isAuthenticated
+const mapStateToProps = ({ authentication }) => ({
+    isAuthenticated: authentication.isAuthenticated
 });
 
 export default connect(mapStateToProps)(Menu);
