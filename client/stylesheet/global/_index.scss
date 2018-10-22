@@ -45,6 +45,7 @@
 
 .form {
     &__wrapper {
+        position: relative;
         max-width: 400px;
         margin: 0 auto;
         padding: 15px;
@@ -102,6 +103,19 @@
         position: absolute;
         left: 0;
         bottom: -26px;
+
+        &_auth {      
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            border-top-left-radius: $primary-border-radius;
+            border-top-right-radius: $primary-border-radius;
+            border: 1px solid $error;
+            color: $error;
+            background-color: rgba(255, 0, 0, 0.19);
+        }
     }
 
     &__button {

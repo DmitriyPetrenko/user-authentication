@@ -1,7 +1,13 @@
 // Actions
 import { userConstans } from "../actions/UserConstants";
 
-const initialState = {
+const user = localStorage.getItem("user");
+const initialState = user ? {
+    isAuthenticated: true,
+    isFetching: false,
+    messageError: "",
+    user
+} : {
     isAuthenticated: false,
     isFetching: false,
     messageError: "",
@@ -17,20 +23,35 @@ export const authentication = (state = initialState, action) => {
             isFetching: true
         };
     case userConstans.USER_LOGIN_SUCCESS:
+        return {
+            ...state,
+            isAuthenticated: true,
+            isFetching: false,
+            messageError: "",
+            user: action.user
+        };
     case userConstans.USER_REGISTRATION_SUCCESS:
         return {
             ...state,
             isAuthenticated: true,
             isFetching: false,
+            messageError: "",
             user: action.user
         };
     case userConstans.USER_LOGIN_FAILURE:
+        return {
+            ...state,
+            isFetching: false,
+            messageError: "Invalid email / password pair"
+        };
     case userConstans.USER_REGISTRATION_FAILURE:
         return {
             ...state,
             isFetching: false,
-            messageError: action.messageError
+            messageError: "Email exists"
         };
+    case userConstans.USER_LOGOUT:
+        return state;
     default:
         return state;
     }

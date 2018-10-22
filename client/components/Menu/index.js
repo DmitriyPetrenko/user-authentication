@@ -1,20 +1,28 @@
 // Core
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { bool } from "prop-types";
 
 // Components
 import ButtonLogout from "../ButtonLogout";
+// Actions
+import UserActions from "../../actions";
 
 class Menu extends Component {
     static propTypes = {
         isAuthenticated: bool.isRequired
     }
 
+    constructor (props) {
+        super(props);
+
+        this.boundActionCreators = bindActionCreators(UserActions, props.dispatch);
+    }
+
     render () {
         const { isAuthenticated } = this.props;
-        console.log(this.props);
 
         return (
             <nav className="header__menu-wrapper clearfix">
@@ -27,15 +35,26 @@ class Menu extends Component {
                             Home
                         </Link>
                     </li>
-                </ul>
-                { isAuthenticated ? (
-                    <ul className="header__menu pull-right">
+                    { isAuthenticated && (
                         <li className="header__menu-item">
-                            <ButtonLogout />
+                            <Link
+                                to="/main"
+                                className="header__menu-link"
+                            >
+                                App
+                            </Link>
                         </li>
-                    </ul>
-                ) : (
-                    <ul className="header__menu pull-right">
+                    ) }
+                </ul>
+                <ul className="header__menu pull-right">
+                    { isAuthenticated ? (
+                        <li className="header__menu-item">
+                            <ButtonLogout
+                                { ...this.boundActionCreators }
+                            />
+                        </li>
+                    ) : (
+                        <>
                         <li className="header__menu-item">
                             <Link
                                 to="/login"
@@ -52,8 +71,9 @@ class Menu extends Component {
                                 Registration
                             </Link>
                         </li>
-                    </ul>
-                )}
+                        </>
+                    ) }
+                </ul>
             </nav>
         );
     }

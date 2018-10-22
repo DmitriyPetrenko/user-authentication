@@ -1,15 +1,16 @@
 // Core
 import React from "react";
-import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { func, object } from "prop-types";
 
 function ButtonLogout (props) {
-    console.log(props);
     return (
         <button
             className="header__menu-link"
             onClick={() => {
-                () => history.push("/");
+                props.logout(() => {
+                    props.history.push("/");
+                });
             }}
         >
             Logout
@@ -17,4 +18,9 @@ function ButtonLogout (props) {
     );
 }
 
-export default withRouter(connect()(ButtonLogout));
+ButtonLogout.propTypes = {
+    logout: func.isRequired,
+    history: object.isRequired
+};
+
+export default withRouter((ButtonLogout));

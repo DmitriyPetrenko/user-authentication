@@ -5,26 +5,60 @@ import api from "../instruments/api";
 import { userConstans } from "./UserConstants";
 
 // Actions
-export const registration = (user, callback) => (dispatch) => {
+export const login = (user, callbackSuccess, callbackError) => (dispatch) => {
+    dispatch({
+        type: userConstans.USER_LOGIN_REQUEST
+    });
+
+    api.login(user)
+        .then(() => {
+            dispatch({
+                type: userConstans.USER_LOGIN_SUCCESS,
+                user
+            });
+
+            localStorage.setItem("user", JSON.stringify(user));
+            callbackSuccess();
+        })
+        .catch((error) => {
+            dispatch({
+                type: userConstans.USER_LOGIN_FAILURE,
+                messageError: error.data.messageError
+            });
+
+            callbackError();
+        });
+};
+
+export const registration = (user, callbackSuccess, callbackError) => (dispatch) => {
     dispatch({
         type: userConstans.USER_REGISTRATION_REQUEST
     });
 
     api.registration(user)
-        .then((response) => {
-            console.log(response);
+        .then(() => {
             dispatch({
                 type: userConstans.USER_REGISTRATION_SUCCESS,
                 user
             });
 
-            callback();
+            localStorage.setItem("user", JSON.stringify(user));
+            callbackSuccess();
         })
         .catch((error) => {
-            console.log(error);
             dispatch({
                 type: userConstans.USER_REGISTRATION_FAILURE,
                 messageError: error.data.messageError
             });
+
+            callbackError();
         });
+};
+
+export const logout = (callbackSuccess) => (dispatch) => {
+    dispatch({
+        type: userConstans.USER_LOGOUT
+    });
+    localStorage.removeItem("user");
+    callbackSuccess();
 };

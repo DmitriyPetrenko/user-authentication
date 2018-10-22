@@ -1,13 +1,13 @@
 export const responseHandler = (response) => {
-    console.log(response);
-    if (response.ok) {
-        if (response.status === 201) {
-            return Promise.resolve(response);
-        }
+    if (response.status === 201 || response.status === 200) {
+        return Promise.resolve(response);
     }
 };
 
-export const errorHandler = (error) => {
-    console.log(error.response);
-    return Promise.reject(error.response);
+export const errorHandler = (error) => Promise.reject(error.response);
+
+export const replacer = (str, param, offset, currentStr) => {
+    if (~currentStr.search(/(^\w{1})/)) {
+        return str.toUpperCase();
+    }
 };

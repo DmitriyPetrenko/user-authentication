@@ -1,11 +1,8 @@
 // Core
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { func, bool } from "prop-types";
-import { connect } from "react-redux";
+import { func, bool, object, string } from "prop-types";
 
-// Instruments
-import { validateLogin } from "../../instruments/validation";
 // Components
 import Spinner from "../Spinner";
 
@@ -13,21 +10,23 @@ class FormLogin extends Component {
     static propTypes = {
         isFetching: bool.isRequired,
         formIsValid: bool.isRequired,
+        isAuthenticated: bool.isRequired,
+        messageError: string.isRequired,
         onClickHandler: func.isRequired,
+        onSubmitHandler: func.isRequired,
         onBlurHandler: func.isRequired,
         onFocusHandler: func.isRequired,
-        formValidHandler: func.isRequired
+        formValidHandler: func.isRequired,
+        login: func.isRequired,
+        history: object.isRequired,
+        location: object.isRequired
     };
 
     constructor (props) {
         super(props);
-
         this.state = {
-            isFocus: false,
-            isFetching: false,
-            formIsValid: false,
             fields: {
-                username: {
+                email: {
                     content: "",
                     isValid: null,
                     messageError: ""
@@ -41,49 +40,84 @@ class FormLogin extends Component {
         };
 
         this.onBlur = this.onBlur.bind(this);
-        this.onSubmitHandler = this.onSubmitHandler.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+        this.serverErrorHandler = this.serverErrorHandler.bind(this);
     }
 
-    validationLoginField (field, content) {
-        let updatedStateOfAccount = null;
-        let resultOfValidation = null;
+    componentDidMount () {
+        const {
+            isAuthenticated,
+            history
+        } = this.props;
 
-        switch (field) {
-        case "username":
-            resultOfValidation = validateLogin.username(content);
-            break;
-        case "password":
-            resultOfValidation = validateLogin.password(content);
-            break;
+        if (isAuthenticated) {
+            history.push("/main");
         }
+    }
 
-        updatedStateOfAccount = { ...this.state.fields, ...{ [field]: {
-            content,
-            isValid: resultOfValidation.isValid,
-            messageError: resultOfValidation.messageError
+    serverErrorHandler () {
+        const updatedStateOfFields = { ...this.state.fields, ...{ email: {
+            content: "",
+            isValid: false,
+            messageError: ""
+        }, password: {
+            content: "",
+            isValid: false,
+            messageError: ""
         } } };
 
         this.setState({
-            fields: updatedStateOfAccount
-        }, this.props.formValidHandler(updatedStateOfAccount));
+            fields: updatedStateOfFields
+        });
     }
 
     onBlur (event) {
-        this.props.onBlurHandler(event.target, this.validationLoginField.bind(this));
+        if (event.target.className.indexOf("form__field") === -1) return;
+
+        const {
+            onBlurHandler,
+            formValidHandler
+        } = this.props;
+        const updatedStateOfFields = onBlurHandler(this.state.fields, event.target);
+
+        this.setState({
+            fields: updatedStateOfFields
+        }, formValidHandler(updatedStateOfFields));
     }
 
-    onSubmitHandler () {
+    onSubmit (event) {
+        const {
+            login,
+            history,
+            onSubmitHandler
+        } = this.props;
+        const {
+            email,
+            password
+        } = this.state.fields;
+        const user = {
+            email: email.content,
+            password: password.content
+        };
 
+        login(user, () => {
+            history.push("/main");
+        }, () => {
+            this.serverErrorHandler();
+        });
+
+        onSubmitHandler(event);
     }
 
     render () {
         const {
-            username,
+            email,
             password
         } = this.state.fields;
         const {
             isFetching,
             formIsValid,
+            messageError,
             onClickHandler,
             onFocusHandler
         } = this.props;
@@ -93,27 +127,36 @@ class FormLogin extends Component {
                 <div className="form__wrapper">
                     <form
                         className="form__inner"
-                        // onSubmit={ this.onSubmitHandler }
+                        onSubmit={ this.onSubmit }
                         onClick={ onClickHandler }
                         onFocus={ onFocusHandler }
                         onBlur={ this.onBlur }
                     >
+                        { messageError && messageError !== "" && (
+                            <div className="form__error_auth">
+                                { messageError }
+                            </div>
+                        ) }
                         <div className="form__head">
                             <h2 className="form__caption">Login</h2>
                         </div>
                         <div className="form__body">
                             <div className="form__body-item">
-                                <label className="form__label" htmfor="username">
-                                    Email or username
+                                <label className="form__label" htmfor="email">
+                                    Email
                                 </label>
                                 <input
                                     className="form__field"
-                                    name="username"
-                                    id="username"
+                                    name="email"
+                                    id="email"
                                     type="text"
-                                    aria-invalid={ username.isValid }
+                                    aria-invalid={ email.isValid }
                                 />
-                                { !username.isValid && <span className="form__error error">{ username.messageError }</span> }
+                                { !email.isValid &&
+                                    <span className="form__error error">
+                                        { email.messageError }
+                                    </span>
+                                }
                             </div>
                             <div className="form__body-item">
                                 <label className="form__label" htmfor="password">
@@ -126,16 +169,25 @@ class FormLogin extends Component {
                                     type="password"
                                     aria-invalid={ password.isValid }
                                 />
-                                { !password.isValid && <span className="form__error error">{ password.messageError }</span> }
+                                { !password.isValid &&
+                                    <span className="form__error error">
+                                        { password.messageError }
+                                    </span>
+                                }
                             </div>
                             <div className="form__body-item">
-                                <button className="form__button" disabled={ !formIsValid }>
+                                <button
+                                    className="form__button"
+                                    disabled={ !formIsValid || isFetching }
+                                >
                                     { isFetching ? <Spinner /> : "Login" }
                                 </button>
                             </div>
                         </div>
                         <div className="form__footer text-center">
-                            <p className="form__footer-text">Do not have an account? <Link to="/registration" className="link">Registration</Link></p>
+                            <p className="form__footer-text">
+                                Do not have an account? <Link to="/registration" className="link">Registration</Link>
+                            </p>
                         </div>
                     </form>
                 </div>
@@ -144,8 +196,4 @@ class FormLogin extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    isFetching: state.login.isFetching
-});
-
-export default connect(mapStateToProps)(FormLogin);
+export default FormLogin;

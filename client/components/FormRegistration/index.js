@@ -3,25 +3,21 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { func, bool, object, string } from "prop-types";
 
-// Instruments
-import { validateRegistration } from "../../instruments/validation";
 // Components
 import Spinner from "../Spinner";
-// Actions
-import { registration } from "../../actions";
 
 class FormRegistration extends Component {
     static propTypes = {
         isFetching: bool.isRequired,
         formIsValid: bool.isRequired,
+        isAuthenticated: bool.isRequired,
         messageError: string.isRequired,
         onClickHandler: func.isRequired,
         onSubmitHandler: func.isRequired,
         onBlurHandler: func.isRequired,
         onFocusHandler: func.isRequired,
         formValidHandler: func.isRequired,
-        setNewStateOfField: func.isRequired,
-        dispatch: func.isRequired,
+        registration: func.isRequired,
         history: object.isRequired
     };
 
@@ -54,55 +50,51 @@ class FormRegistration extends Component {
 
         this.onBlur = this.onBlur.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.serverErrorHandler = this.serverErrorHandler.bind(this);
     }
 
-    validationRegistrationField (field, content) {
+    componentDidMount () {
         const {
-            formValidHandler,
-            setNewStateOfField
+            isAuthenticated,
+            history
         } = this.props;
-        let updatedStateOfFields = null;
-        let resultOfValidation = null;
 
-        switch (field) {
-        case "username":
-            resultOfValidation = validateRegistration.username(content);
-            break;
-        case "email":
-            resultOfValidation = validateRegistration.email(content);
-            break;
-        case "password":
-            resultOfValidation = validateRegistration.password(content);
-            break;
-        case "passwordConfirm":
-            resultOfValidation = validateRegistration.passwordConfirm(this.state.fields.password.content, content);
-            break;
+        if (isAuthenticated) {
+            history.push("/main");
         }
+    }
 
-        // return updated state of field // func(prevState, newState, field)
+    serverErrorHandler () {
+        const updatedStateOfFields = { ...this.state.fields, ...{ email: {
+            content: "",
+            isValid: false,
+            messageError: this.props.messageError
+        } } };
 
-        updatedStateOfFields = setNewStateOfField(this.state.fields, {
-            content,
-            isValid: resultOfValidation.isValid,
-            messageError: resultOfValidation.messageError
-        }, field);
+        this.setState({
+            fields: updatedStateOfFields
+        });
+    }
+
+    onBlur (event) {
+        if (event.target.className.indexOf("form__field") === -1) return;
+
+        const {
+            onBlurHandler,
+            formValidHandler
+        } = this.props;
+        const updatedStateOfFields = onBlurHandler(this.state.fields, event.target);
 
         this.setState({
             fields: updatedStateOfFields
         }, formValidHandler(updatedStateOfFields));
     }
 
-    onBlur (event) {
-        this.props.onBlurHandler(event.target, this.validationRegistrationField.bind(this));
-    }
-
     onSubmit (event) {
         const {
-            dispatch,
+            registration,
             history,
-            onSubmitHandler,
-            setNewStateOfField,
-            messageError
+            onSubmitHandler
         } = this.props;
         const {
             username,
@@ -116,21 +108,13 @@ class FormRegistration extends Component {
             createdDate: +new Date()
         };
 
-        dispatch(registration(user, () => {
+        registration(user, () => {
             history.push("/main");
-        }));
+        }, () => {
+            this.serverErrorHandler();
+        });
 
-        if (!onSubmitHandler(event)) {
-            const updatedStateOfFields = setNewStateOfField(this.state.fields, {
-                content: "",
-                isValid: false,
-                messageError
-            }, "email");
-
-            this.setState({
-                fields: updatedStateOfFields
-            });
-        }
+        onSubmitHandler(event);
     }
 
     render () {
@@ -172,7 +156,11 @@ class FormRegistration extends Component {
                                     type="text"
                                     aria-invalid={ username.isValid }
                                 />
-                                { !username.isValid && <span className="form__error error">{ username.messageError }</span> }
+                                { !username.isValid &&
+                                    <span className="form__error error">
+                                        { username.messageError }
+                                    </span>
+                                }
                             </div>
                             <div className="form__body-item">
                                 <label className="form__label" htmlFor="email">
@@ -185,7 +173,11 @@ class FormRegistration extends Component {
                                     type="email"
                                     aria-invalid={ email.isValid }
                                 />
-                                { !email.isValid && <span className="form__error error">{ email.messageError }</span> }
+                                { !email.isValid &&
+                                    <span className="form__error error">
+                                        { email.messageError }
+                                    </span>
+                                }
                             </div>
                             <div className="form__body-item">
                                 <label className="form__label" htmlFor="password">
@@ -198,7 +190,11 @@ class FormRegistration extends Component {
                                     type="password"
                                     aria-invalid={ password.isValid }
                                 />
-                                { !password.isValid && <span className="form__error error">{ password.messageError }</span> }
+                                { !password.isValid &&
+                                    <span className="form__error error">
+                                        { password.messageError }
+                                    </span>
+                                }
                             </div>
                             <div className="form__body-item">
                                 <label className="form__label" htmlFor="passwordConfirm">
@@ -211,16 +207,25 @@ class FormRegistration extends Component {
                                     type="password"
                                     aria-invalid={ passwordConfirm.isValid }
                                 />
-                                { !passwordConfirm.isValid && <span className="form__error error">{ passwordConfirm.messageError }</span> }
+                                { !passwordConfirm.isValid &&
+                                    <span className="form__error error">
+                                        { passwordConfirm.messageError }
+                                    </span>
+                                }
                             </div>
                             <div className="form__body-item">
-                                <button className="form__button" disabled={ !formIsValid || isFetching }>
+                                <button
+                                    className="form__button"
+                                    disabled={ !formIsValid || isFetching }
+                                >
                                     { isFetching ? <Spinner /> : "create account" }
                                 </button>
                             </div>
                         </div>
                         <div className="form__footer text-center">
-                            <p className="form__footer-text">Do you have an account? <Link to="/login" className="link">Login</Link></p>
+                            <p className="form__footer-text">
+                                Do you have an account? <Link to="/login" className="link">Login</Link>
+                            </p>
                         </div>
                     </form>
                 </div>

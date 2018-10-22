@@ -24,3 +24,20 @@
         }
     }
 }
+
+button.header__menu-link {
+    line-height: inherit;
+    font-size: 1em;
+    color: #fff;
+    background-color: $theme-grey;
+    
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+        outline: none;
+        border: 0;
+        box-shadow: none;
+    }
+}
+

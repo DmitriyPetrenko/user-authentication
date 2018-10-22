@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 // Actions
-import * as UserActions from "../actions";
+import UserActions from "../actions";
+
+// Instruments
+import { validateFieldOfForm } from "./validation";
 
 const withForm = (WrappedComponent, props) => {
     class WithForm extends Component {
@@ -24,34 +27,41 @@ const withForm = (WrappedComponent, props) => {
             this.formValidHandler = this.formValidHandler.bind(this);
         }
 
-        onClickHandler () {
-            this.setState((currentState) => ({
-                isFocus: !currentState.isFocus
-            }));
-        }
+        validationField (currentStateOfFields, field, content) {
+            let updatedStateOfFields = null;
+            let resultOfValidation = null;
 
-        onBlurHandler (field, validationFormField) {
-            if (field.className !== "form__field" && field.className !== "form__field form__field_textarea") return;
+            switch (field) {
+            case "username":
+                resultOfValidation = validateFieldOfForm.username(content);
+                break;
+            case "email":
+                resultOfValidation = validateFieldOfForm.email(content);
+                break;
+            case "password":
+                resultOfValidation = validateFieldOfForm.password(content);
+                break;
+            case "passwordConfirm":
+                resultOfValidation = validateFieldOfForm.passwordConfirm(currentStateOfFields.password.content, content);
+                break;
+            case "textarea":
+                resultOfValidation = validateFieldOfForm.textarea(content);
+                break;
+            }
 
-            this.timeOutId = setTimeout(() => {
-                this.setState({
-                    isFocus: false
-                });
-            });
+            updatedStateOfFields = { ...currentStateOfFields, ...{ [field]: {
+                content,
+                isValid: resultOfValidation.isValid,
+                messageError: resultOfValidation.messageError
+            } } };
 
-            validationFormField(field.id, field.value);
-        }
-
-        onFocusHandler () {
-            clearTimeout(this.timeOutId);
+            return updatedStateOfFields;
         }
 
         formValidHandler (fields) {
             const allFieldsAreValid = Object.values(fields).every((field) => field.isValid);
 
-            if (!allFieldsAreValid && !this.state.formIsValid) {
-                return;
-            } else if (!allFieldsAreValid) {
+            if (!allFieldsAreValid) {
                 this.setState({
                     formIsValid: false
                 });
@@ -62,10 +72,28 @@ const withForm = (WrappedComponent, props) => {
             }
         }
 
-        setNewStateOfField (prevState, newState, field) {
-            const updatedStateOfFields = { ...prevState, ...{ [field]: newState } };
+        onClickHandler (event) {
+            if (event.target.className.indexOf("form__field") === -1) return;
 
-            return updatedStateOfFields;
+            this.setState((currentState) => ({
+                isFocus: !currentState.isFocus
+            }));
+        }
+
+        onBlurHandler (currentStateOfFields, field) {
+            this.timeOutId = setTimeout(() => {
+                this.setState({
+                    isFocus: false
+                });
+            });
+
+            return this.validationField(currentStateOfFields, field.id, field.value);
+        }
+
+        onFocusHandler (event) {
+            if (event.target.className.indexOf("form__field") === -1) return;
+
+            clearTimeout(this.timeOutId);
         }
 
         onSubmitHandler (event) {
@@ -75,11 +103,7 @@ const withForm = (WrappedComponent, props) => {
                 this.setState({
                     formIsValid: false
                 });
-
-                return false;
             }
-
-            return true;
         }
 
         render () {
@@ -98,7 +122,6 @@ const withForm = (WrappedComponent, props) => {
                     onBlurHandler={ this.onBlurHandler }
                     onFocusHandler={ this.onFocusHandler }
                     formValidHandler={ this.formValidHandler }
-                    setNewStateOfField={ this.setNewStateOfField }
                 />
             );
         }

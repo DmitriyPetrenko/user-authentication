@@ -1,16 +1,22 @@
 // Config
 import config from "../config";
 
-export const validateRegistration = {
+export const validateFieldOfForm = {
     username (content) {
         const { MAX_LENGTH, MIN_LENGTH } = config;
 
-        if (content.length >= MIN_LENGTH.username && content.length <= MAX_LENGTH.username) {
+        if (
+            content.length >= MIN_LENGTH.username &&
+            content.length <= MAX_LENGTH.username
+        ) {
             return {
                 isValid: true,
                 messageError: ""
             };
-        } else if (content.length < MIN_LENGTH.username && content.length !== 0) {
+        } else if (
+            content.length < MIN_LENGTH.username &&
+            content.length !== 0
+        ) {
             return {
                 isValid: false,
                 messageError: `User name must be at least ${MIN_LENGTH.username} characters long.`
@@ -49,12 +55,19 @@ export const validateRegistration = {
             digit: /[0-9]/.exec(content)
         };
 
-        if (content.length >= MIN_LENGTH.password && content.length <= MAX_LENGTH.password && find.letter && find.digit) {
+        if (
+            content.length >= MIN_LENGTH.password &&
+            content.length <= MAX_LENGTH.password &&
+            find.letter && find.digit
+        ) {
             return {
                 isValid: true,
                 messageError: ""
             };
-        } else if (content.length < MIN_LENGTH.password && content.length !== 0) {
+        } else if (
+            content.length < MIN_LENGTH.password &&
+            content.length !== 0
+        ) {
             return {
                 isValid: false,
                 messageError: `Password must be at least ${MIN_LENGTH.password} characters long.`
@@ -98,39 +111,7 @@ export const validateRegistration = {
             isValid: true,
             messageError: ""
         };
-    }
-};
-
-export const validateLogin = {
-    username (content) {
-        if (content.length === 0) {
-            return {
-                isValid: false,
-                messageError: "Field is required."
-            };
-        }
-
-        return {
-            isValid: true,
-            messageError: ""
-        };
     },
-    password (content) {
-        if (content.length === 0) {
-            return {
-                isValid: false,
-                messageError: "Field is required."
-            };
-        }
-
-        return {
-            isValid: true,
-            messageError: ""
-        };
-    }
-};
-
-export const validateCorrection = {
     textarea (content) {
         if (content.length === 0) {
             return {

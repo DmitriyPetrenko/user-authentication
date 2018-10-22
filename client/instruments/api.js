@@ -21,11 +21,6 @@ const api = {
         return axios.post(`${prefix}${path.registration}`, user)
             .then(responseHandler)
             .catch(errorHandler);
-    },
-    userRequest (email) {
-        return axios.get(`${prefix}${path.registration}`, email)
-            .then(responseHandler)
-            .catch(errorHandler);
     }
 };
 
