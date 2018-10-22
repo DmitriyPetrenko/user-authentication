@@ -1,13 +1,13 @@
 const config = {
-    MAX_LENGTH: {
+    maxLength: {
         username: 30,
         password: 60
     },
-    MIN_LENGTH: {
+    minLength: {
         username: 3,
         password: 6
     },
-    API: {
+    api: {
         prefix: "http://localhost:8080",
         path: {
             login: "/login",

@@ -83,7 +83,11 @@ class FormRegistration extends Component {
             onBlurHandler,
             formValidHandler
         } = this.props;
-        const updatedStateOfFields = onBlurHandler(this.state.fields, event.target);
+        const {
+            fields
+        } = this.state;
+
+        const updatedStateOfFields = onBlurHandler(fields, event.target);
 
         this.setState({
             fields: updatedStateOfFields

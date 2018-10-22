@@ -33,19 +33,13 @@ const withForm = (WrappedComponent, props) => {
 
             switch (field) {
             case "username":
-                resultOfValidation = validateFieldOfForm.username(content);
-                break;
             case "email":
-                resultOfValidation = validateFieldOfForm.email(content);
-                break;
+            case "textarea":
             case "password":
                 resultOfValidation = validateFieldOfForm.password(content);
                 break;
             case "passwordConfirm":
                 resultOfValidation = validateFieldOfForm.passwordConfirm(currentStateOfFields.password.content, content);
-                break;
-            case "textarea":
-                resultOfValidation = validateFieldOfForm.textarea(content);
                 break;
             }
 

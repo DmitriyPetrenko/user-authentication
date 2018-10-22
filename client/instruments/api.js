@@ -10,7 +10,7 @@ import { responseHandler, errorHandler } from "./helpers";
 const {
     prefix,
     path
-} = config.API;
+} = config.api;
 const api = {
     login (user) {
         return axios.post(`${prefix}${path.login}`, user)

@@ -3,28 +3,28 @@ import config from "../config";
 
 export const validateFieldOfForm = {
     username (content) {
-        const { MAX_LENGTH, MIN_LENGTH } = config;
+        const { maxLength, minLength } = config;
 
         if (
-            content.length >= MIN_LENGTH.username &&
-            content.length <= MAX_LENGTH.username
+            content.length >= minLength.username &&
+            content.length <= maxLength.username
         ) {
             return {
                 isValid: true,
                 messageError: ""
             };
         } else if (
-            content.length < MIN_LENGTH.username &&
+            content.length < minLength.username &&
             content.length !== 0
         ) {
             return {
                 isValid: false,
-                messageError: `User name must be at least ${MIN_LENGTH.username} characters long.`
+                messageError: `User name must be at least ${minLength.username} characters long.`
             };
-        } else if (content.length > MAX_LENGTH.username) {
+        } else if (content.length > maxLength.username) {
             return {
                 isValid: false,
-                messageError: `User name must be no longer than ${MAX_LENGTH.username} characters.`
+                messageError: `User name must be no longer than ${maxLength.username} characters.`
             };
         } else if (content.length === 0) {
             return {
@@ -49,15 +49,15 @@ export const validateFieldOfForm = {
         };
     },
     password (content) {
-        const { MAX_LENGTH, MIN_LENGTH } = config;
+        const { maxLength, minLength } = config;
         const find = {
             letter: /[a-zA-Z]/.exec(content),
             digit: /[0-9]/.exec(content)
         };
 
         if (
-            content.length >= MIN_LENGTH.password &&
-            content.length <= MAX_LENGTH.password &&
+            content.length >= minLength.password &&
+            content.length <= maxLength.password &&
             find.letter && find.digit
         ) {
             return {
@@ -65,17 +65,17 @@ export const validateFieldOfForm = {
                 messageError: ""
             };
         } else if (
-            content.length < MIN_LENGTH.password &&
+            content.length < minLength.password &&
             content.length !== 0
         ) {
             return {
                 isValid: false,
-                messageError: `Password must be at least ${MIN_LENGTH.password} characters long.`
+                messageError: `Password must be at least ${minLength.password} characters long.`
             };
-        } else if (content.length > MAX_LENGTH.password) {
+        } else if (content.length > maxLength.password) {
             return {
                 isValid: false,
-                messageError: `Password must be no longer than ${MAX_LENGTH.password} characters.`
+                messageError: `Password must be no longer than ${maxLength.password} characters.`
             };
         } else if (content.length === 0) {
             return {
@@ -94,8 +94,8 @@ export const validateFieldOfForm = {
             };
         }
     },
-    passwordConfirm (prevContent, content) {
-        if (prevContent !== content) {
+    passwordConfirm (contentFromPassword, content) {
+        if (contentFromPassword !== content) {
             return {
                 isValid: false,
                 messageError: "Password does not match."
