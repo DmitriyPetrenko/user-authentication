@@ -6,22 +6,20 @@ const bcrypt = require("bcrypt");
 // Config
 const config = require("../config");
 // Models
-const User = require("../models/registration");
+const User = require("../models/user");
 
 router.post(`${config.registration.route}`, (req, res) => {
-    User.find({ email: req.body.email })
+    User.find({
+        email: req.body.email
+    })
         .exec()
         .then((user) => {
             if (user.length > 1) {
-               return res.status(409).json({
-                   messageError: "Email exists"
-               });
+               return res.status(409).send("Email exists");
             } else {
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
                     if (err) {
-                        return res.status(500).json({
-                            messageError: err
-                        });
+                        return res.status(500).send(err);
                     } else {
                         const user = {
                             username: req.body.username,
@@ -32,14 +30,10 @@ router.post(`${config.registration.route}`, (req, res) => {
 
                         User.collection.insertOne(user)
                             .then(result => {
-                                res.status(201).json({
-                                  messageError: "User created"
-                                });
+                                res.status(201).send(err);
                             })
                             .catch(err => {
-                                res.status(500).json({
-                                    messageError: err
-                                });
+                                res.status(500).send(err);
                             });
                     }
                 });

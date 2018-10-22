@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 // Config
 const config = require("./config");
+const loginRoutes = require("./routes/login");
 const registrationRoutes = require("./routes/registration");
 
 // Set up connection of database
@@ -37,6 +38,7 @@ app.use((req, res, next) => {
 });
 
 // Routes which should handle requests
+app.use("/", loginRoutes);
 app.use("/", registrationRoutes);
 
 app.use((req, res, next) => {

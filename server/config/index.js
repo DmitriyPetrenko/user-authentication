@@ -1,5 +1,8 @@
 module.exports = {
     serverPort: "8080",
+    login: {
+        route: "/login"
+    },
     registration: {
         route: "/registration"
     },
