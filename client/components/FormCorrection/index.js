@@ -4,12 +4,9 @@ import { func, bool, object } from "prop-types";
 
 // Instruments
 import { replacer } from "../../instruments/helpers";
-// Components
-import Spinner from "../Spinner";
 
 class FormCorrection extends Component {
     static propTypes = {
-        isFetching: bool.isRequired,
         formIsValid: bool.isRequired,
         isAuthenticated: bool.isRequired,
         onClickHandler: func.isRequired,
@@ -23,6 +20,7 @@ class FormCorrection extends Component {
     constructor (props) {
         super(props);
         this.state = {
+            resultCorrection: "",
             fields: {
                 textarea: {
                     content: "",
@@ -57,8 +55,13 @@ class FormCorrection extends Component {
         const {
             textarea
         } = this.state.fields;
-        const newStr = textarea.content.replace(/(^\w{1})/g, replacer);
-        
+
+        const newStr = textarea.content.toLowerCase().replace(/(^\w){1}|\.{1}\s*(\w{1})|,{1}\s*(\w{1})|\s*’{1}\s*(\w{1})|\s*(\.{3})\s*/g, replacer);
+
+        this.setState({
+            resultCorrection: newStr
+        });
+
         onSubmitHandler(event);
     }
 
@@ -67,7 +70,9 @@ class FormCorrection extends Component {
             textarea
         } = this.state.fields;
         const {
-            isFetching,
+            resultCorrection
+        } = this.state;
+        const {
             formIsValid,
             onClickHandler,
             onFocusHandler
@@ -89,7 +94,7 @@ class FormCorrection extends Component {
                         <div className="form__body">
                             <div className="form__body-item text-left">
                                 <label className="form__label" htmlFor="textarea">
-                                    Input/Output
+                                    Input
                                 </label>
                                 <textarea
                                     className="form__field form__field_textarea"
@@ -103,13 +108,19 @@ class FormCorrection extends Component {
                                     </span>
                                 }
                             </div>
-
+                            <div className="form__body-item text-left">
+                                { resultCorrection &&
+                                    <div className="form__result">
+                                        { resultCorrection }
+                                    </div>
+                                }
+                            </div>
                             <div className="form__body-item">
                                 <button
                                     className="form__button"
-                                    disabled={ !formIsValid || isFetching }
+                                    disabled={ !formIsValid }
                                 >
-                                    { isFetching ? <Spinner /> : "process" }
+                                    process
                                 </button>
                             </div>
                         </div>

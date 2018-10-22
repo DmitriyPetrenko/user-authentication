@@ -104,7 +104,7 @@
         left: 0;
         bottom: -26px;
 
-        &_auth {      
+        &_auth {
             position: absolute;
             top: 0;
             left: 0;
@@ -156,6 +156,8 @@
     &__field_textarea {
         padding: 5px 10px;
         line-height: 1.625;
-        height: 100px;
+        height: 150px;
+        font-size: 1em;
+        font-family: inherit;
     }
 }
