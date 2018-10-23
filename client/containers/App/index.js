@@ -18,7 +18,7 @@ import PrivateRoute from "../../instruments/PrivatRoute";
 // Styles
 import "../../stylesheet/styles.scss";
 
-@hot()
+@hot(module)
 class App extends Component {
     static propTypes = {
         isAuthenticated: bool.isRequired
@@ -27,7 +27,9 @@ class App extends Component {
     render () {
         return (
             <div className="container">
-                <Header />
+                <Header
+                    { ...this.props }
+                />
                 <Switch>
                     <Route
                         path="/"

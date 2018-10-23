@@ -4,10 +4,12 @@ import React from "react";
 // Components
 import Menu from "../Menu";
 
-function Header () {
+function Header (props) {
     return (
         <header className="header">
-            <Menu />
+            <Menu
+                { ...props }
+            />
         </header>
     );
 }

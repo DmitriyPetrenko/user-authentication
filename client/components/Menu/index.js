@@ -51,6 +51,7 @@ class Menu extends Component {
                         <li className="header__menu-item">
                             <ButtonLogout
                                 { ...this.boundActionCreators }
+                                history={ this.props.history }
                             />
                         </li>
                     ) : (

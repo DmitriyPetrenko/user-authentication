@@ -1,6 +1,5 @@
 // Core
 import React from "react";
-import { withRouter } from "react-router-dom";
 import { func, object } from "prop-types";
 
 function ButtonLogout (props) {
@@ -18,9 +17,4 @@ function ButtonLogout (props) {
     );
 }
 
-ButtonLogout.propTypes = {
-    logout: func.isRequired,
-    history: object.isRequired
-};
-
-export default withRouter((ButtonLogout));
+export default ButtonLogout;
