@@ -1,5 +1,6 @@
 // Core
 import React, { Component } from "react";
+import { hot } from "react-hot-loader";
 import { Switch, Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bool } from "prop-types";
@@ -17,6 +18,7 @@ import PrivateRoute from "../../instruments/PrivatRoute";
 // Styles
 import "../../stylesheet/styles.scss";
 
+@hot()
 class App extends Component {
     static propTypes = {
         isAuthenticated: bool.isRequired

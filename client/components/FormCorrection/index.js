@@ -56,7 +56,9 @@ class FormCorrection extends Component {
             textarea
         } = this.state.fields;
 
-        const newStr = textarea.content.toLowerCase().replace(/(^\w){1}|\.{1}\s*(\w{1})|,{1}\s*(\w{1})|\s*’{1}\s*(\w{1})|\s*(\.{3})\s*/g, replacer);
+        const newStr = textarea.content
+            .toLowerCase()
+            .replace(/(^\w){1}|\.{1}\s*(\w{1})|,{1}\s*(\w{1})|\s*’{1}\s*(\w{1})|\s*(\.{3})\s*/g, replacer);
 
         this.setState({
             resultCorrection: newStr

@@ -56,9 +56,11 @@ export const registration = (user, callbackSuccess, callbackError) => (dispatch)
 };
 
 export const logout = (callbackSuccess) => (dispatch) => {
+    localStorage.removeItem("user");
+
     dispatch({
         type: userConstans.USER_LOGOUT
     });
-    localStorage.removeItem("user");
+
     callbackSuccess();
 };

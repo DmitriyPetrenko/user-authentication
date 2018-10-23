@@ -51,7 +51,10 @@ export const authentication = (state = initialState, action) => {
             messageError: "Email exists"
         };
     case userConstans.USER_LOGOUT:
-        return state;
+        return {
+            ...state,
+            isAuthenticated: false
+        };
     default:
         return state;
     }

@@ -6,7 +6,7 @@ const PrivatRoute = ({ component: Component, ...rest }) => (
     <Route
         {...rest}
         render={(props) => {
-            if (props.isAuthenticated || localStorage.getItem("isAuthenticated") !== true) {
+            if (rest.isAuthenticated) {
                 return <Component {...props} />;
             }
 

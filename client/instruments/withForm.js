@@ -36,10 +36,11 @@ const withForm = (WrappedComponent, props) => {
             case "email":
             case "textarea":
             case "password":
-                resultOfValidation = validateFieldOfForm.password(content);
+                resultOfValidation = validateFieldOfForm[field](content);
                 break;
             case "passwordConfirm":
-                resultOfValidation = validateFieldOfForm.passwordConfirm(currentStateOfFields.password.content, content);
+                resultOfValidation = validateFieldOfForm.passwordConfirm(currentStateOfFields.password.content,
+                    content);
                 break;
             }
 
