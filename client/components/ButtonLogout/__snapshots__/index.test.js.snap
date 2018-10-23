@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button rendered correct 1`] = `
+<button
+  className="header__menu-link"
+  onClick={[Function]}
+>
+  Logout
+</button>
+`;
