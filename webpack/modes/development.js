@@ -1,9 +1,18 @@
-const merge = require("webpack-merge")
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const common = require("./common.js");
+// Core
+import webpack from "webpack";
+import Config from "webpack-config";
 
-module.exports = merge(common, {
-    mode: "development",
+// Paths
+import { path } from "../path.js";
+
+export default new Config().extend("./webpack/modes/common.js").merge({
+    entry: {
+        app: path.entry.app
+    },
+    output: {
+        filename: "js/[name].bundle.js",
+        path: path.output
+    },
     module: {
         rules: [
             {
@@ -16,20 +25,19 @@ module.exports = merge(common, {
                     loader: "css-loader",
                     options: {
                         sourceMap: true,
+                        minimize: false
                     },
                 }, {
                     loader: "sass-loader",
-                    options: {
-                        sourceMap: true,
-                    },
                 }]
             }
         ],
     },
     devtool: "cheap-module-eval-source-map",
     devServer: {
-        contentBase: "./dist",
+        contentBase: path.output,
         historyApiFallback: true,
-        port: 8090
+        port: 8090,
+        hot: true
     },
 });
