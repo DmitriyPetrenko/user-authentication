@@ -1,17 +1,15 @@
 {
     "restartable": "rs",
+    "delay": "2500",
     "ignore": [
         ".git",
         "node_modules/**/node_modules"
     ],
-    "verbose": false,
-    "exec":
-        "webpack-dev-server --hot --open --config=./webpack/webpack.config.babel.js --env development --display-error-details",
     "watch": [
-        "./webpack/"
+        "webpack/",
+        "server/"
     ],
-    "env": {
-        "NODE_ENV": "development"
-    },
+    "verbose": false,
+    "exec":"webpack-dev-server --config=./webpack/webpack.config.babel.js --open --env.NODE_ENV=development",
     "ext": "js,json"
 }

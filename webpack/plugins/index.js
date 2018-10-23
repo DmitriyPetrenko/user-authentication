@@ -3,6 +3,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import HtmlWebpackTemplate from "html-webpack-template";
 import CleanWebpackPlugin from "clean-webpack-plugin";
 import UglifyJsPlugin from "uglifyjs-webpack-plugin";
+import { HotModuleReplacementPlugin } from "webpack";
 
 export const cleanPlugin = (path) => new CleanWebpackPlugin([path], {
     root: process.cwd()
@@ -20,3 +21,5 @@ export const uglifyJsPlugin = new UglifyJsPlugin({
     parallel: true,
     sourceMap: true
 });
+
+export const hotModuleReplacementPlugin = new HotModuleReplacementPlugin();

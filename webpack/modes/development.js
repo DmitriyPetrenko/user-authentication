@@ -1,11 +1,12 @@
 // Core
 import webpack from "webpack";
-import Config from "webpack-config";
+import merge from "webpack-merge";
 
-// Paths
-import { path } from "../path.js";
+// Common
+import { common } from "./common";
 
-export default new Config().extend("./webpack/modes/common.js").merge({
+export const development = (path, plugins) => merge(common(path, plugins), {
+    mode: "development",
     entry: {
         app: path.entry.app
     },
@@ -33,11 +34,14 @@ export default new Config().extend("./webpack/modes/common.js").merge({
             }
         ],
     },
-    devtool: "cheap-module-eval-source-map",
     devServer: {
-        contentBase: path.output,
+        hot: true,
         historyApiFallback: true,
-        port: 8090,
-        hot: true
+        overlay: {
+            warnings: true,
+            errors: true
+        },
+        stats: "errors-only",
+        port: 8090
     },
 });

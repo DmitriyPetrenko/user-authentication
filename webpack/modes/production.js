@@ -1,18 +1,13 @@
 // Core
 import webpack from "webpack";
-import Config from "webpack-config";
+import merge from "webpack-merge";
 
-// Plugins
-import { uglifyJsPlugin } from "../plugins/index";
+// Common
+import { common } from "./common";
 
-export default new Config().extend({
-    "./webpack/modes/common.js": config => {
-        config.devtool = "source-map";
- 
-        return config;
-    }
-}).merge({
+export const production = (path, plugins) => merge(common(path, plugins), {
+    mode: "production",
     optimization: {
-        minimizer: [uglifyJsPlugin]
+        minimizer: [plugins.uglifyJsPlugin]
     }
 });

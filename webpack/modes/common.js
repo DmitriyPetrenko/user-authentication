@@ -1,20 +1,12 @@
-// Core
-import Config from 'webpack-config';
-
-// Paths
-import { path } from "../path.js";
-
-// Plugins
-import { cleanPlugin, htmlPlugin } from "../plugins/index";
-
-export default new Config().merge({
+export const common = (path, plugins) => ({
     entry: path.entry.app,
     output: {
         path: path.output
     },
     plugins: [
-        cleanPlugin(path.output),
-        htmlPlugin
+        plugins.cleanPlugin(path.output),
+        plugins.htmlPlugin,
+        plugins.hotModuleReplacementPlugin
     ],
     module: {
         rules: [
@@ -28,3 +20,26 @@ export default new Config().merge({
         ]
     }
 });
+
+// export default new Config().merge({
+//     entry: path.entry.app,
+//     output: {
+//         path: path.output
+//     },
+//     plugins: [
+//         cleanPlugin(path.output),
+//         htmlPlugin,
+//         hotModuleReplacementPlugin
+//     ],
+//     module: {
+//         rules: [
+//             {
+//                 test: /\.(js|jsx)$/,
+//                 exclude: /node_modules/,
+//                 use: {
+//                     loader: "babel-loader"
+//                 }
+//             },
+//         ]
+//     }
+// });

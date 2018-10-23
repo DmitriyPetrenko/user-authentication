@@ -4,6 +4,11 @@
         "es6": true,
         "jest": true
     },
+    "settings": {
+        "react": {
+            "version": "^16.5.2"
+        }
+    },
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended"
