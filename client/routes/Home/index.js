@@ -1,10 +1,10 @@
 // Core
-import React from "react";
+import React from 'react';
 
 // Components
-import Welcome from "../../components/Welcome";
+import Welcome from '../../components/Welcome';
 
-function Home () {
+function Home() {
     return (
         <section className="section">
             <section className="section-content text-center">

@@ -1,13 +1,13 @@
 // Core
-import React from "react";
-import { object } from "prop-types";
+import React from 'react';
+import { object } from 'prop-types';
 
 // Components
-import FormCorrection from "../../components/FormCorrection";
+import FormCorrection from '../../components/FormCorrection';
 // Instruments
-import withForm from "../../instruments/withForm";
+import withForm from '../../instruments/withForm';
 
-function Main (props) {
+function Main(props) {
     const Form = withForm(FormCorrection, props);
 
     return (

@@ -1,15 +1,13 @@
 // Core
-import React from "react";
+import React from 'react';
 
 // Components
-import Menu from "../Menu";
+import Menu from '../Menu';
 
-function Header (props) {
+function Header(props) {
     return (
         <header className="header">
-            <Menu
-                { ...props }
-            />
+            <Menu {...props} />
         </header>
     );
 }

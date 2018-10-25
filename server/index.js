@@ -1,36 +1,36 @@
 // Core
-const express = require("express");
+const express = require('express');
 const app = express();
-const morgan = require("morgan");
+const morgan = require('morgan');
 const mongoose = require('mongoose');
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 // Config
-const config = require("./config");
-const loginRoutes = require("./routes/login");
-const registrationRoutes = require("./routes/registration");
+const config = require('./config');
+const loginRoutes = require('./routes/login');
+const registrationRoutes = require('./routes/registration');
 
 // Set up connection of database
 const url = `mongodb://${config.db.user}:${config.db.password}.@ds135413.mlab.com:35413/${config.db.name}`;
-mongoose.connect(url, {
-    useCreateIndex: true,
-    useNewUrlParser: true
-});
+mongoose.connect(
+    url,
+    {
+        useCreateIndex: true,
+        useNewUrlParser: true
+    }
+);
 mongoose.Promise = global.Promise;
 
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 // Using bodyParser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    );
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
-    if (req.method === "OPTIONS") {
-        res.header("Access-Control-Allow-Methods", "POST, GET");
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'POST, GET');
         return res.status(200).json({});
     }
 
@@ -38,11 +38,11 @@ app.use((req, res, next) => {
 });
 
 // Routes which should handle requests
-app.use("/", loginRoutes);
-app.use("/", registrationRoutes);
+app.use('/', loginRoutes);
+app.use('/', registrationRoutes);
 
 app.use((req, res, next) => {
-    const error = new Error("Not found");
+    const error = new Error('Not found');
 
     error.status = 404;
     next(error);

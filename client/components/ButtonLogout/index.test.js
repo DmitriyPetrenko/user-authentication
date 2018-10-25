@@ -1,10 +1,10 @@
 // Core
-import React from "react";
-import renderer from "react-test-renderer";
+import React from 'react';
+import renderer from 'react-test-renderer';
 
-import ButtonLogout from "./index";
+import ButtonLogout from './index';
 
-test("Button rendered correct", () => {
+test('Button rendered correct', () => {
     const component = renderer.create(<ButtonLogout />);
     const tree = component.toJSON();
 

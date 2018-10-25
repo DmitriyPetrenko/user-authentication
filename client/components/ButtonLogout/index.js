@@ -1,20 +1,36 @@
 // Core
-import React from "react";
-import { func, object } from "prop-types";
+import React, { Component } from 'react';
+import { func, object } from 'prop-types';
 
-function ButtonLogout (props) {
-    return (
-        <button
-            className="header__menu-link"
-            onClick={() => {
-                props.logout(() => {
-                    props.history.push("/");
-                });
-            }}
-        >
-            Logout
-        </button>
-    );
+class ButtonLogout extends Component {
+    static propTypes = {
+        logout: func.isRequired,
+        history: object.isRequired
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.onClickHandler = this.onClickHandler.bind(this);
+    }
+
+    onClickHandler(event) {
+        const { logout, history } = this.props;
+
+        logout(() => {
+            history.push('/');
+        });
+
+        event.preventDefault();
+    }
+
+    render() {
+        return (
+            <button className="header__menu-link" onClick={this.onClickHandler}>
+                Logout
+            </button>
+        );
+    }
 }
 
 export default ButtonLogout;

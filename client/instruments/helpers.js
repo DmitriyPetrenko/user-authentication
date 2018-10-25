@@ -6,14 +6,7 @@ export const responseHandler = (response) => {
 
 export const errorHandler = (error) => Promise.reject(error.response);
 
-export const replacer = (
-    match,
-    group1,
-    group2,
-    group3,
-    group4,
-    group5
-) => {
+export const replacer = (match, group1, group2, group3, group4, group5) => {
     if (~match.search(/(^\w){1}/)) {
         return group1.toUpperCase();
     } else if (~match.search(/\.{1}\s*(\w{1})/)) {

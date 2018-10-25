@@ -1,13 +1,13 @@
 // Core
-import React from "react";
-import { object } from "prop-types";
+import React from 'react';
+import { object } from 'prop-types';
 
 // Components
-import FormRegistration from "../../components/FormRegistration";
+import FormRegistration from '../../components/FormRegistration';
 // Instruments
-import withForm from "../../instruments/withForm";
+import withForm from '../../instruments/withForm';
 
-function Registration (props) {
+function Registration(props) {
     const Form = withForm(FormRegistration, props);
 
     return (

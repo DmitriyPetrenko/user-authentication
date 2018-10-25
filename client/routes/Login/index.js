@@ -1,13 +1,13 @@
 // Core
-import React from "react";
-import { object } from "prop-types";
+import React from 'react';
+import { object } from 'prop-types';
 
 // Components
-import FormLogin from "../../components/FormLogin";
+import FormLogin from '../../components/FormLogin';
 // Instruments
-import withForm from "../../instruments/withForm";
+import withForm from '../../instruments/withForm';
 
-function Login (props) {
+function Login(props) {
     const Form = withForm(FormLogin, props);
 
     return (

@@ -1,8 +1,8 @@
 // Instruments - API
-import api from "../instruments/api";
+import api from '../instruments/api';
 
 // Constants
-import { userConstans } from "./UserConstants";
+import { userConstans } from './UserConstants';
 
 // Actions
 export const login = (user, callbackSuccess, callbackError) => (dispatch) => {
@@ -17,7 +17,7 @@ export const login = (user, callbackSuccess, callbackError) => (dispatch) => {
                 user
             });
 
-            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem('user', JSON.stringify(user));
             callbackSuccess();
         })
         .catch((error) => {
@@ -42,7 +42,7 @@ export const registration = (user, callbackSuccess, callbackError) => (dispatch)
                 user
             });
 
-            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem('user', JSON.stringify(user));
             callbackSuccess();
         })
         .catch((error) => {
@@ -56,7 +56,7 @@ export const registration = (user, callbackSuccess, callbackError) => (dispatch)
 };
 
 export const logout = (callbackSuccess) => (dispatch) => {
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
 
     dispatch({
         type: userConstans.USER_LOGOUT

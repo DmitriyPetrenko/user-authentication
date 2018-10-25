@@ -1,79 +1,64 @@
 // Core
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { bool } from "prop-types";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { bool } from 'prop-types';
 
 // Components
-import ButtonLogout from "../ButtonLogout";
+import ButtonLogout from '../ButtonLogout';
 // Actions
-import UserActions from "../../actions";
+import UserActions from '../../actions';
 
 class Menu extends Component {
     static propTypes = {
         isAuthenticated: bool.isRequired
-    }
+    };
 
-    constructor (props) {
+    constructor(props) {
         super(props);
 
         this.boundActionCreators = bindActionCreators(UserActions, props.dispatch);
     }
 
-    render () {
+    render() {
         const { isAuthenticated } = this.props;
 
         return (
             <nav className="header__menu-wrapper clearfix">
                 <ul className="header__menu pull-left">
                     <li className="header__menu-item">
-                        <Link
-                            to="/"
-                            className="header__menu-link"
-                        >
+                        <Link to="/" className="header__menu-link">
                             Home
                         </Link>
                     </li>
-                    { isAuthenticated && (
+                    {isAuthenticated && (
                         <li className="header__menu-item">
-                            <Link
-                                to="/main"
-                                className="header__menu-link"
-                            >
+                            <Link to="/main" className="header__menu-link">
                                 App
                             </Link>
                         </li>
-                    ) }
+                    )}
                 </ul>
                 <ul className="header__menu pull-right">
-                    { isAuthenticated ? (
+                    {isAuthenticated ? (
                         <li className="header__menu-item">
-                            <ButtonLogout
-                                { ...this.boundActionCreators }
-                                history={ this.props.history }
-                            />
+                            <ButtonLogout {...this.boundActionCreators} {...this.props} />
                         </li>
                     ) : (
                         <>
-                        <li className="header__menu-item">
-                            <Link
-                                to="/login"
-                                className="header__menu-link"
-                            >
-                                Login
-                            </Link>
-                        </li>
-                        <li className="header__menu-item">
-                            <Link
-                                to="/registration"
-                                className="header__menu-link"
-                            >
-                                Registration
-                            </Link>
-                        </li>
+                            <li className="header__menu-item">
+                                <Link to="/login" className="header__menu-link">
+                                    Login
+                                </Link>
+                            </li>
+                            <li className="header__menu-item">
+                                <Link to="/registration" className="header__menu-link">
+                                    Registration
+                                </Link>
+                            </li>
                         </>
-                    ) }
+                    )}
                 </ul>
             </nav>
         );

@@ -1,4 +1,4 @@
 // Action creators
-import * as UserActions from "./UserActions";
+import * as UserActions from './UserActions';
 
 export default UserActions;

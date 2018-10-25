@@ -1,12 +1,12 @@
 // Core
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 // Config
-const config = require("../config");
+const config = require('../config');
 // Models
-const User = require("../models/user");
+const User = require('../models/user');
 
 router.post(`${config.registration.route}`, (req, res) => {
     User.find({
@@ -15,12 +15,10 @@ router.post(`${config.registration.route}`, (req, res) => {
         .exec()
         .then((user) => {
             if (user.length > 1) {
-               return res.status(409).send("Email exists");
+                return res.status(409).send('Email exists');
             } else {
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
-                    if (err) {
-                        return res.status(500).send(err);
-                    } else {
+                    if (!err) {
                         const user = {
                             username: req.body.username,
                             email: req.body.email,
@@ -28,14 +26,17 @@ router.post(`${config.registration.route}`, (req, res) => {
                             createdDate: req.body.createdDate
                         };
 
-                        User.collection.insertOne(user)
-                            .then(result => {
+                        User.collection
+                            .insertOne(user)
+                            .then((result) => {
                                 res.status(201).send(err);
                             })
-                            .catch(err => {
+                            .catch((err) => {
                                 res.status(500).send(err);
                             });
                     }
+
+                    return res.status(500).send(err);
                 });
             }
         });

@@ -1,6 +1,6 @@
 // Core
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
 
 const PrivatRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -13,7 +13,7 @@ const PrivatRoute = ({ component: Component, ...rest }) => (
             return (
                 <Redirect
                     to={{
-                        pathname: "/login",
+                        pathname: '/login',
                         state: {
                             from: props.location
                         }

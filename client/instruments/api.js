@@ -1,24 +1,23 @@
 // Core
-import axios from "axios";
+import axios from 'axios';
 
 // Config
-import config from "../config";
+import config from '../config';
 
 // Helpers
-import { responseHandler, errorHandler } from "./helpers";
+import { responseHandler, errorHandler } from './helpers';
 
-const {
-    prefix,
-    path
-} = config.api;
+const { prefix, path } = config.api;
 const api = {
-    login (user) {
-        return axios.post(`${prefix}${path.login}`, user)
+    login(user) {
+        return axios
+            .post(`${prefix}${path.login}`, user)
             .then(responseHandler)
             .catch(errorHandler);
     },
-    registration (user) {
-        return axios.post(`${prefix}${path.registration}`, user)
+    registration(user) {
+        return axios
+            .post(`${prefix}${path.registration}`, user)
             .then(responseHandler)
             .catch(errorHandler);
     }

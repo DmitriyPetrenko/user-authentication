@@ -1,12 +1,12 @@
 // Core
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 // Config
-const config = require("../config");
+const config = require('../config');
 // Models
-const User = require("../models/user");
+const User = require('../models/user');
 
 router.post(`${config.login.route}`, (req, res) => {
     User.find({
@@ -15,15 +15,10 @@ router.post(`${config.login.route}`, (req, res) => {
         .exec()
         .then((user) => {
             if (user.length > 1) {
-                   return res.status(401).send("Invalid email");
+                return res.status(401).send('Invalid email');
             } else {
                 bcrypt.compare(req.body.password, user[0].password, (err, auth) => {
-                    console.log(auth);
-                    if (!auth) {
-                        return res.status(401).send(err);
-                    } else {
-                        return res.status(200).send("Authentic");
-                    }
+                    return !auth ? res.status(401).send(err) : res.status(200).send('Authentic');
                 });
             }
         });

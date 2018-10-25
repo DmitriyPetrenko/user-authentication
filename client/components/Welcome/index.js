@@ -1,7 +1,7 @@
 // Core
-import React from "react";
+import React from 'react';
 
-function Welcome () {
+function Welcome() {
     return (
         <h1 className="home__main-caption">
             Welcome
