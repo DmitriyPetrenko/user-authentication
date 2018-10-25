@@ -1,13 +1,13 @@
-module.exports = {
+export default {
     projects: [
         {
-          displayName: "test",
+            displayName: 'test'
         },
         {
-          runner: "jest-runner-eslint",
-          displayName: "lint",
-          testMatch: ["<rootDir>/client/**/*.js"]
+            runner: 'jest-runner-eslint',
+            displayName: 'lint',
+            testMatch: ['<rootDir>/client/**/*.js']
         }
     ],
-    watchPlugins: ["jest-runner-eslint/watch-fix"]
+    watchPlugins: ['jest-runner-eslint/watch-fix']
 };

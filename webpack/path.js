@@ -1,9 +1,9 @@
 // Instruments
-import { resolve } from "path";
+import { resolve } from 'path';
 
 export const path = {
     entry: {
-        app: resolve(__dirname, "../client/index.js")
+        app: resolve(__dirname, '../client/index.js')
     },
-    output: resolve(__dirname, "../public")
+    output: resolve(__dirname, '../public')
 };
