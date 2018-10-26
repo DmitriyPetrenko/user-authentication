@@ -1,9 +1,2 @@
-./node_modules/
-./client/stylesheet/
-./server/
-./webpack/
-./package.json
-./package-lock.json
-./.prettierrc.json
-./.eslintrc.json
+node_modules
 

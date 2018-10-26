@@ -19,7 +19,7 @@
     }
   },
   "lint-staged": {
-    "*.{js}": [
+    "*.{js, json}": [
       "eslint --color --max-warnings=0",
       "prettier --write",
       "git add"

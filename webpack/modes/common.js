@@ -16,26 +16,3 @@ export const common = (path, plugins) => ({
         ]
     }
 });
-
-// export default new Config().merge({
-//     entry: path.entry.app,
-//     output: {
-//         path: path.output
-//     },
-//     plugins: [
-//         cleanPlugin(path.output),
-//         htmlPlugin,
-//         hotModuleReplacementPlugin
-//     ],
-//     module: {
-//         rules: [
-//             {
-//                 test: /\.(js|jsx)$/,
-//                 exclude: /node_modules/,
-//                 use: {
-//                     loader: "babel-loader"
-//                 }
-//             },
-//         ]
-//     }
-// });
