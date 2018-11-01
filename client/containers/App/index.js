@@ -7,13 +7,10 @@ import { bool } from 'prop-types';
 
 // Components
 import Header from '../../components/Header';
-// Containers
-import Home from '../../routes/Home';
-import Login from '../../routes/Login';
-import Registration from '../../routes/Registration';
-import NotFound from '../../routes/NotFound';
-import Main from '../../routes/Main';
+// Instruments
 import PrivateRoute from '../../instruments/PrivatRoute';
+// Routes config
+import routes from '../../config/routes';
 
 // Styles
 import '../../stylesheet/styles.scss';
@@ -30,11 +27,25 @@ class App extends Component {
             <div className="container">
                 <Header {...this.props} />
                 <Switch>
-                    <Route path="/" exact component={Home} />
-                    <PrivateRoute path="/main" component={Main} isAuthenticated={this.props.isAuthenticated} />
-                    <Route path="/login" component={Login} />
-                    <Route path="/registration" component={Registration} />
-                    <Route component={NotFound} />
+                    {routes.map(
+                        (route) =>
+                            route.isPrivate ? (
+                                <PrivateRoute
+                                    key={route.name}
+                                    path={route.path}
+                                    exact={route.exact}
+                                    component={route.component}
+                                    isAuthenticated={this.props.isAuthenticated}
+                                />
+                            ) : (
+                                <Route
+                                    key={route.name}
+                                    path={route.path}
+                                    exact={route.exact}
+                                    component={route.component}
+                                />
+                            )
+                    )}
                 </Switch>
             </div>
         );
